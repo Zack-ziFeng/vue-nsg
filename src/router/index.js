@@ -1,13 +1,18 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-/**
- * 组件引入
- */
-import Home from '@/components/Home'
-import Classify from '@/components/Classify'
-import Message from '@/components/Message'
-import Cart from '@/components/Cart'
-import My from '@/components/My'
+
+// 引入组件
+import Home from '@/components/home.vue'
+import Login from '@/components/login.vue'
+import Regis from '@/components/regis.vue'
+import Manger from '@/components/page/manger.vue'
+import My from '@/components/page/manger/my.vue'
+import Send from '@/components/page/manger/send.vue'
+import MyHistory from '@/components/page/manger/history.vue'
+import Page404 from '@/components/404.vue'
+import Cart from '@/components/page/cart.vue'
+import Message from '@/components/page/message.vue'
+import Category from '@/components/page/category.vue'
 
 Vue.use(Router)
 
@@ -16,33 +21,51 @@ export default new Router({
     {
       path: '/',
       name: '首页',
-      name2: 'home',
       component: Home
     },
     {
-      path: '/classify',
-      name: '分类',
-      name2: 'classify',
-      component: Classify
+      path: '/login',
+      name: 'login',
+      hidden: true,
+      component: Login
     },
     {
-      path: '/message',
+      path: '/regis',
+      name: 'regis',
+      hidden: true,
+      component: Regis
+    },
+    {
+      path: '/cate',
+      name: '分类',
+      component: Category
+    },
+    {
+      path: '/mess',
       name: '消息',
-      name2: 'message',
       component: Message
     },
     {
       path: '/cart',
       name: '购物车',
-      name2: 'cart',
       component: Cart
     },
     {
-      path: '/my',
+      path: '/manger',
       name: '我的',
-      name2: 'my',
-      component: My
+      redirect: '/manger/my',
+      component: Manger,
+      hasChild: true,
+      children: [
+        {path: '/manger/my', name: '我的信息', component: My},
+        {path: '/manger/send', name: '发货管理', component: Send},
+        {path: '/manger/history', name: '发货记录', component: MyHistory}
+      ]
+    },
+    {
+      path: '*',
+      hidden: true,
+      component: Page404
     }
-
   ]
 })
