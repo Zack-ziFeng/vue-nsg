@@ -3,6 +3,8 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import axios from 'axios'
+import Vueaxios from 'vue-axios'
 
 // 引入element-ui组件和css
 import ElementUi from 'element-ui'
@@ -20,6 +22,7 @@ import 'mint-ui/lib/style.css'
 Vue.use(ElementUi)
 Vue.use(Vuex)
 Vue.use(MintUI)
+Vue.use(Vueaxios, axios)
 
 Vue.config.productionTip = false
 

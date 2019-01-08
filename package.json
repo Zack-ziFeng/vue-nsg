@@ -12,11 +12,18 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+<<<<<<< HEAD
     "element-ui": "^2.4.11",
     "mint-ui": "^2.2.13",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
+=======
+    "mint-ui": "^2.2.13",
+    "vue": "^2.5.2",
+    "vue-axios": "^2.1.4",
+    "vue-router": "^3.0.1"
+>>>>>>> bc4271d5428858ad15dc5ca17642b937678fbc21
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
