@@ -9,13 +9,12 @@
     <Items-Recommend :list="recommend"></Items-Recommend>
   </div>
 </template>
-
 <script>
 import SelectPiece from "@/components/page/category/SelectPiece.vue";
 import ItemsRecommend from "@/components/page/category/ItemsRecommend.vue";
 
 export default {
-  data() {
+  data () {
     return {
       selected: "1",
       dataTab: "",
