@@ -1,16 +1,12 @@
 <template>
   <mt-tabbar v-model="selected">
     <template v-for="route in $router.options.routes">
-      <mt-tab-item
-        v-if="!route.hidden"
-        :id="route.path"
-        :key="route.path"
-        @click.native="changeTab(route.path)"
-      >
-        <img
-          slot="icon"
-          :src="route.path === '/' ? 'static/img/' + 'home.png' : 'static/img/' + route.path.slice(1) + '.png'"
-        >
+      <mt-tab-item v-if="!route.hidden"
+                   :id="route.path"
+                   :key="route.path"
+                   @click.native="changeTab(route.path)">
+        <img slot="icon"
+             :src="route.path === '/' ? 'static/img/' + 'home.png' : 'static/img/' + route.path.slice(1) + '.png'">
         {{route.name}}
       </mt-tab-item>
     </template>
