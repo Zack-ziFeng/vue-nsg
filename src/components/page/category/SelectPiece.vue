@@ -38,12 +38,12 @@ export default {
 }
 .arrow-r {
   display: block;
-  width: 0.8rem;
-  height: 0.8rem;
+  width: 0.256rem;
+  height: 0.256rem;
   background: #fcfcfc url(../../../../static/img/arrow-r.png) no-repeat 50% 50%;
   background-size: cover;
   float: right;
-  margin: 0.5rem 0.5rem 0 0;
+  margin: 0.16rem 0.16rem 0 0;
   opacity: 0.5;
 }
 #items ul {
@@ -51,11 +51,11 @@ export default {
   padding: 0;
   margin: 0;
   background-color: #fff;
-  padding-top: 0.2rem;
+  padding-top: 0.064rem;
 }
 #items ul li {
   display: inline-block;
-  width: 6.18rem;
+  width: 1.9rem;
 }
 #items ul li a {
   text-decoration: none;
@@ -66,13 +66,13 @@ export default {
 #items ul li img {
   display: block;
   margin: 0 auto;
-  width: 3.75rem;
-  height: 3.75rem;
+  width: 1.2rem;
+  height: 1.2rem;
 }
 #items ul li p {
   text-align: center;
-  font-size: 0.55rem;
-  line-height: 1.48rem;
+  font-size: 0.176rem;
+  line-height: 0.47rem;
 }
 </style>
 

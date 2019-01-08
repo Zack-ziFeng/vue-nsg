@@ -21,15 +21,15 @@ export default {
 
 <style scoped>
 h2 {
-  border-left: solid 0.2rem #ff5001;
-  height: 1.8rem;
+  border-left: solid 0.064rem #ff5001;
+  height: 0.576rem;
   margin: 0;
   padding: 0;
-  padding-left: 0.25rem;
-  font-size: 1.2rem;
-  line-height: 1.8rem;
+  padding-left: 0.08rem;
+  font-size: 0.384rem;
+  line-height: 0.576rem;
   font-weight: normal;
-  margin: 0.9rem;
+  margin: 0.288rem;
 }
 ul {
   margin: 0;
@@ -39,9 +39,9 @@ ul {
 ul li {
   display: inline-block;
   background-color: #fff;
-  width: 12rem;
+  width: 3.84rem;
   overflow: hidden;
-  margin: 0.4rem;
+  margin: 0.06rem;
   margin-right: 0;
 }
 ul li a {
@@ -50,23 +50,24 @@ ul li a {
   color: #000;
 }
 ul li a img {
-  width: 12rem;
+  width: 3.84rem;
 }
 ul li a h3 {
   white-space: nowrap;
   margin: 0;
   padding: 0;
-  font-size: 0.8rem;
-  padding: 0.4rem;
-  padding-bottom: 0.6rem;
+  font-size: 0.256rem;
+  padding: 0.128rem;
+  padding-bottom: 0.25rem;
   font-weight: normal;
-  border-bottom: 1px solid #eee;
+  border-bottom: 0.02rem solid #eee;
 }
 ul li a p {
     margin: 0;
     padding: 0;
+    font-size: 0.32rem;
     font-weight: bold;
     color: #ff5001;
-    padding: 0.3rem 0;
+    padding: 0.096rem 0;
 }
 </style>

@@ -20,7 +20,6 @@ export default {
 </script>
 
 <style>
-<<<<<<< HEAD
 html, body, ul, li, ol, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, form, fieldset, legend, img,input{ margin:0; padding:0; }
 fieldset, img,input,button { border:0 none; padding:0;margin:0;outline-style:none; }   /*去掉input等聚焦时的蓝色边框*/
 ul,li,ol{ list-style:none; }
@@ -40,7 +39,4 @@ html,body{ height: 100%; }
   color: #2c3e50; */
   margin-top: 0.82rem;
 }
-=======
-
->>>>>>> bc4271d5428858ad15dc5ca17642b937678fbc21
 </style>

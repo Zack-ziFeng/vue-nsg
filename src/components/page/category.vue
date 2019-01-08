@@ -97,7 +97,7 @@ export default {
   color: #999999;
 }
 .mint-navbar .mint-tab-item {
-  padding: 12px 0;
+  padding: 0.24rem 0;
 }
 .mint-navbar .mint-tab-item.is-selected {
   color: #ff5001;
