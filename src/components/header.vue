@@ -36,8 +36,9 @@ export default {
         left: 50%;
         top: 50%;
         transform: translate(-50%,-50%);
-        width: 4.2rem;
+        width: 4.6rem;
         height: 0.6rem;
+        font-size: 0;
         span {
             display: inline-block;
             height: 100%;
