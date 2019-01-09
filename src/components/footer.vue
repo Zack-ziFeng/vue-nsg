@@ -1,5 +1,5 @@
 <template>
-  <mt-tabbar v-model="selected" :fixed="true">
+  <mt-tabbar v-model="selected" :fixed = true>
     <template v-for="route in $router.options.routes">
       <mt-tab-item v-if="!route.hidden"
                    :id="route.path"

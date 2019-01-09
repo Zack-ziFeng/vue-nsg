@@ -55,7 +55,7 @@ export default {
 }
 #items ul li {
   display: inline-block;
-  width: 1.9rem;
+  width: 1.8rem;
 }
 #items ul li a {
   text-decoration: none;
