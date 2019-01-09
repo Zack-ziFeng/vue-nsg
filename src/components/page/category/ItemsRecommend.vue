@@ -40,18 +40,18 @@ ul {
 ul li {
   display: inline-block;
   background-color: #fff;
-  width: 3.84rem;
+  width: 3.7rem;
   overflow: hidden;
-  margin: 0.06rem;
+  margin: 0.04rem;
   margin-right: 0;
 }
 ul li a {
-  display: inline-block;
+  display: block;
   text-decoration: none;
   color: #000;
 }
 ul li a img {
-  width: 3.84rem;
+  width: 3.8rem;
 }
 ul li a h3 {
   white-space: nowrap;
