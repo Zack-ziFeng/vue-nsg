@@ -1,5 +1,7 @@
 <template>
   <div id="category">
+    <Cate-Head></Cate-Head>
+
     <mt-navbar v-model="selected" id="navTab">
       <mt-tab-item :id="idx + 1 + ''" v-for="(item, idx) in dataTab" :key="idx">{{item.gc_name}}</mt-tab-item>
     </mt-navbar>
@@ -12,6 +14,7 @@
 <script>
 import SelectPiece from "@/components/page/category/SelectPiece.vue";
 import ItemsRecommend from "@/components/page/category/ItemsRecommend.vue";
+import CateHead from '@/components/page/category/CateHead.vue';
 
 export default {
   data () {
@@ -26,7 +29,8 @@ export default {
   },
   components: {
     SelectPiece,
-    ItemsRecommend
+    ItemsRecommend,
+    CateHead
   },
   updated() {
     this.dataText = this.dataTab[this.selected - 1].text;
