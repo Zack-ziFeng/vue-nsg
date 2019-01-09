@@ -2,7 +2,8 @@
   <div>
     <h2>商品推荐</h2>
     <ul>
-      <li v-for="(item, idx) in list" :key="idx">
+      <li v-for="(item, idx) in list"
+          :key="idx">
         <a href>
           <img :src="item.goods_image_url">
           <h3>{{item.goods_name}}</h3>
@@ -15,8 +16,8 @@
 
 <script>
 export default {
-  props: ["list"]
-};
+  props: ['list']
+}
 </script>
 
 <style scoped>
@@ -63,11 +64,11 @@ ul li a h3 {
   border-bottom: 0.02rem solid #eee;
 }
 ul li a p {
-    margin: 0;
-    padding: 0;
-    font-size: 0.32rem;
-    font-weight: bold;
-    color: #ff5001;
-    padding: 0.096rem 0;
+  margin: 0;
+  padding: 0;
+  font-size: 0.32rem;
+  font-weight: bold;
+  color: #ff5001;
+  padding: 0.096rem 0;
 }
 </style>
