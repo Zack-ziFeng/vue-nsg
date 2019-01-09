@@ -29,7 +29,6 @@
   </div>
 </template>
 <script>
-import { Swipe, SwipeItem } from 'mint-ui'
 import headerLy from '@/components/header.vue'
 export default {
   data () {
@@ -39,8 +38,6 @@ export default {
     }
   },
   components: {
-    Swipe,
-    SwipeItem,
     headerLy
   },
   beforeMount () {
@@ -76,8 +73,8 @@ export default {
 }
 .goodlist {
   .goodTitle {
-    padding: 0.24rem 0 0.24rem 0.14rem;
-    font-size: 0.36rem;
+    padding: 0.2rem 0 0.2rem 0.14rem;
+    font-size: 0.32rem;
     color: #ff5001;
     .titleName {
       padding-left: 0.1rem;
@@ -85,17 +82,17 @@ export default {
     }
   }
   .goodCon {
-    margin-top: 0.24rem;
-    padding: 0 0.08rem;
+    margin-top: 0.1rem;
+    // padding: 0 0.08rem;
     display: flex;
     flex-wrap: wrap;
     li {
       float: left;
-      width: 3.34rem;
+      width: 3.58rem;
       background: #fff;
       margin: 0 0.08rem;
       margin-bottom: 0.24rem;
-      padding: 0 0.08rem;
+      // padding: 0 0.08rem;
       .goodImg {
         height: 3.5rem;
         img {
@@ -104,11 +101,12 @@ export default {
         }
       }
       .goodName {
-        font-size: 0.32rem;
+        font-size: 0.28rem;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        line-height: 1rem;
+        // line-height: 1rem;
+        padding-bottom: 0.2rem;
         border-bottom: 0.04rem solid #eeeeee;
       }
       .goodPrice {
@@ -116,7 +114,7 @@ export default {
         line-height: 0.54rem;
         color: #ff5001;
         span {
-          font-size: 0.34rem;
+          font-size: 0.32rem;
         }
       }
     }

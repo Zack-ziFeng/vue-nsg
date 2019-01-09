@@ -13,6 +13,8 @@ import Page404 from '@/components/404.vue'
 import Cart from '@/components/page/cart.vue'
 import Message from '@/components/page/message.vue'
 import Category from '@/components/page/category.vue'
+import Search from '@/components/page/search.vue'
+import List from '@/components/page/goodlist.vue'
 
 Vue.use(Router)
 
@@ -34,6 +36,18 @@ export default new Router({
       name: 'regis',
       hidden: true,
       component: Regis
+    },
+    {
+      path: '/search',
+      name: 'search',
+      hidden: true,
+      component: Search
+    },
+    {
+      path: '/list',
+      name: 'list',
+      hidden: true,
+      component: List
     },
     {
       path: '/cate',

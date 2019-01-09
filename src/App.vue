@@ -27,7 +27,10 @@ img {border:0; vertical-align:middle; }
 /*  去掉图片低测默认的3像素空白缝隙，或者用display：block也可以*/
 table { border-collapse:collapse; }
 a {text-decoration:none; }
-html,body{ height: 100%; }
+/* html,body{ height: 100%; } */
+body{
+  background: #f5f5f5;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
