@@ -3,20 +3,28 @@
     <h2>商品推荐</h2>
     <ul>
       <li v-for="(item, idx) in list"
-          :key="idx">
-        <a href>
+          :key="idx"
+          :id="item.goods_id"
+          @click="jumpDetails($event)">
+        <a>
           <img :src="item.goods_image_url">
           <h3>{{item.goods_name}}</h3>
           <p>￥{{item.goods_promotion_price}}</p>
         </a>
       </li>
     </ul>
+    <div id="bottom"></div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['list']
+  props: ['list'],
+  methods: {
+    jumpDetails(ev){
+      this.$router.push({path:'/details', query:{goodsId: ev.path[2].id}});
+    }
+  }
 }
 </script>
 
@@ -70,5 +78,8 @@ ul li a p {
   font-weight: bold;
   color: #ff5001;
   padding: 0.096rem 0;
+}
+#bottom {
+  height: 0.84rem;
 }
 </style>

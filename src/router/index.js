@@ -13,6 +13,10 @@ import Page404 from '@/components/404.vue'
 import Cart from '@/components/page/cart.vue'
 import Message from '@/components/page/message.vue'
 import Category from '@/components/page/category.vue'
+import Details from '@/components/page/details.vue'
+import Goods from '@/components/page/details/DetailsGoods.vue'
+import Detail from '@/components/page/details/DetailsD.vue'
+import Evaluate from '@/components/page/details/DetailsEvaluate.vue'
 
 Vue.use(Router)
 
@@ -60,6 +64,19 @@ export default new Router({
         {path: '/manger/my', name: '我的信息', component: My},
         {path: '/manger/send', name: '发货管理', component: Send},
         {path: '/manger/history', name: '发货记录', component: MyHistory}
+      ]
+    },
+    {
+      path: '/details',
+      name: '详情页',
+      hidden: true,
+      component: Details,
+      redirect: '/details/goods',
+      hasChild: true,
+      children: [
+        {path: '/details/goods', name: '商品', component: Goods},
+        {path: '/details/deta', name: '详情', component: Detail},
+        {path: '/details/evaluate', name: '评论', component: Evaluate}
       ]
     },
     {
