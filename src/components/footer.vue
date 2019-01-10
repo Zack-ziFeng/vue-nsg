@@ -17,7 +17,8 @@ import { Tabbar, TabItem } from 'mint-ui'
 export default {
   data () {
     return {
-      selected: '/'
+      selected: '/',
+      show: true
     }
   },
   methods: {

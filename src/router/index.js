@@ -13,15 +13,15 @@ import Page404 from '@/components/404.vue'
 import Cart from '@/components/page/cart.vue'
 import Message from '@/components/page/message.vue'
 import Category from '@/components/page/category.vue'
-<<<<<<< HEAD
+// 搜索
 import Search from '@/components/page/search.vue'
-import List from '@/components/page/goodlist.vue'
-=======
+// 商品列表
+import GoodList from '@/components/page/goodlist.vue'
+import List from '@/components/page/goodlist/list.vue'
 import Details from '@/components/page/details.vue'
 import Goods from '@/components/page/details/DetailsGoods.vue'
 import Detail from '@/components/page/details/DetailsD.vue'
 import Evaluate from '@/components/page/details/DetailsEvaluate.vue'
->>>>>>> 1fa978334014b1746e4841e03d75dfa9daf1538a
 
 Vue.use(Router)
 
@@ -51,10 +51,14 @@ export default new Router({
       component: Search
     },
     {
-      path: '/list',
-      name: 'list',
+      path: '/goodlist',
+      name: 'goodlist',
       hidden: true,
-      component: List
+      component: GoodList,
+      redirect: '/goodlist/list',
+      children: [
+        {path: '/goodlist/list', name: 'list', component: List}
+      ]
     },
     {
       path: '/cate',
