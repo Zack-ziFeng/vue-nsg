@@ -19,9 +19,6 @@ import Search from '@/components/page/search.vue'
 import GoodList from '@/components/page/goodlist.vue'
 import List from '@/components/page/goodlist/list.vue'
 import Details from '@/components/page/details.vue'
-import Goods from '@/components/page/details/DetailsGoods.vue'
-import Detail from '@/components/page/details/DetailsD.vue'
-import Evaluate from '@/components/page/details/DetailsEvaluate.vue'
 
 Vue.use(Router)
 
@@ -91,14 +88,7 @@ export default new Router({
       path: '/details',
       name: '详情页',
       hidden: true,
-      component: Details,
-      redirect: '/details/goods',
-      hasChild: true,
-      children: [
-        {path: '/details/goods', name: '商品', component: Goods},
-        {path: '/details/deta', name: '详情', component: Detail},
-        {path: '/details/evaluate', name: '评论', component: Evaluate}
-      ]
+      component: Details
     },
     {
       path: '*',

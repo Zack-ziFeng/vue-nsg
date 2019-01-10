@@ -7,37 +7,73 @@
       <mt-button slot="right">
         <ul id="nav">
           <li
-            v-for="(item, idx) in $router.options.routes[7].children"
+            v-for="(item, idx) in nav"
             :key="idx"
-            :class="{'active': idx === actId}"
-            @click="changeTab(idx, item.path)"
-          >{{item.name}}</li>
+            :class="{'active': idx.toString() === actId}"
+            @click="changeTab(idx)"
+          >{{item}}</li>
         </ul>
       </mt-button>
       <mt-button icon="more" slot="right"></mt-button>
     </mt-header>
 
-    <router-view></router-view>
+    <mt-tab-container v-model="actId">
+      <mt-tab-container-item id="0">
+        <Details-Goods :goods="data" :Imgs="Img" :goodsName="goods_name" :goodsMsg="goods_msg"></Details-Goods>
+      </mt-tab-container-item>
+      <mt-tab-container-item id="1">
+        <Details-Detail></Details-Detail>
+      </mt-tab-container-item>
+      <mt-tab-container-item id="2">
+        <Details-Evaluate></Details-Evaluate>
+      </mt-tab-container-item>
+    </mt-tab-container>
   </div>
 </template>
 
 <script>
+import DetailsGoods from "@/components/page/details/DetailsGoods.vue";
+import DetailsDetail from "@/components/page/details/DetailsD.vue";
+import DetailsEvaluate from "@/components/page/details/DetailsEvaluate.vue";
+
 export default {
   data() {
     return {
       data: "",
-      actId: 0,
+      goodsId: "",
+      actId: "0",
+      Img: "",
+      goods_name: "",
+      goods_msg: "",
       nav: ["商品", "详情", "评论"]
     };
   },
   methods: {
     changeTab(idx, path) {
-      this.actId = idx;
-      this.$router.push(path);
+      this.actId = idx.toString();
     }
   },
   mounted() {
-    this.$router.push("/details/goods");
+    this.goodsId = this.$route.query.goodsId;
+
+    this.axios.get('https://www.nanshig.com/mobile/index.php', {params: {
+      act: "goods",
+      op: "goods_detail",
+      goods_id: this.goodsId,
+      key: ""
+    }}).then(res=>{
+      this.data = res.data.datas;
+      this.Img = this.data.goods_image.split(',');
+      this.goods_name = this.data.goods_info.goods_name;
+      this.goods_msg = this.data;
+    }).catch(err=>{
+      console.log(err);
+    });
+  },
+  components: {
+    DetailsGoods,
+    DetailsDetail,
+    DetailsEvaluate
   }
 };
 </script>
@@ -45,16 +81,6 @@ export default {
 <style lang="scss" scoped>
 .mint-header {
   background: #ff5001;
-}
-.mint-swipe {
-  height: 7rem;
-  width: 7rem;
-  margin: 0 auto;
-  overflow: hidden;
-}
-.mint-swipe img {
-  display: block;
-  margin: 0 auto;
 }
 #content {
   padding: 0 0.2rem;
@@ -78,6 +104,7 @@ export default {
   }
   .active {
     color: #fff;
+    transform: scale(1.4);
   }
 }
 </style>
