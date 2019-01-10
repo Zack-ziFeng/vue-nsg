@@ -65,8 +65,7 @@ export default {
       this.data = res.data.datas;
       this.Img = this.data.goods_image.split(',');
       this.goods_name = this.data.goods_info.goods_name;
-      this.goods_msg = this.data.goods_info;
-      console.log(this.data);
+      this.goods_msg = this.data;
     }).catch(err=>{
       console.log(err);
     });
