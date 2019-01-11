@@ -60,7 +60,7 @@ export default {
       this.inputText = ''
     },
     goto () {
-      this.$router.push('/goodlist')
+      this.$router.push({path: '/goodlist', query: {search: this.inputText}})
     }
   },
   mounted () {

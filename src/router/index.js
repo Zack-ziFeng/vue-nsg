@@ -51,11 +51,7 @@ export default new Router({
       path: '/goodlist',
       name: 'goodlist',
       hidden: true,
-      component: GoodList,
-      redirect: '/goodlist/list',
-      children: [
-        {path: '/goodlist/list', name: 'list', component: List}
-      ]
+      component: GoodList
     },
     {
       path: '/cate',
