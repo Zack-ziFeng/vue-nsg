@@ -17,23 +17,24 @@
                 @click="delText"></span>
         </div>
       </div>
-      <mt-button slot="right" @click="goto">搜索</mt-button>
+      <mt-button slot="right"
+                 @click="goto(inputText)">搜索</mt-button>
     </mt-header>
     <div class="hotSearch">
       <h3>热门搜索</h3>
       <ul class="hotItem">
         <li v-for="(item,index) in hotList"
             :key="index">
-          <a href="javascript:;">{{item}}</a>
+          <a href="javascript:;"
+             @click="goto(item)">{{item}}</a>
         </li>
       </ul>
       <h3>历史记录</h3>
       <ul class="hisItem">
-        <li>
-          <a href="javascript:;">鞋</a>
-        </li>
-        <li>
-          <a href="javascript:;">外套</a>
+        <li v-for="item in hisList"
+            :key="item.text">
+          <a href="javascript:;"
+             @click="goto(item.text)">{{item.text}}</a>
         </li>
       </ul>
     </div>
@@ -47,7 +48,15 @@ export default {
   data () {
     return {
       inputText: '',
-      hotList: []
+      hotList: [],
+      hisList: [
+        {
+          text: '鞋'
+        },
+        {
+          text: '外套'
+        }
+      ]
     }
   },
   computed: {
@@ -59,8 +68,15 @@ export default {
     delText () {
       this.inputText = ''
     },
-    goto () {
-      this.$router.push({path: '/goodlist', query: {search: this.inputText}})
+    goto (text) {
+      console.log(text)
+      this.$router.push({ path: '/goodlist', query: { search: text } })
+    }
+  },
+  created () {
+    console.log(this.$route)
+    if (this.$route.query.search !== undefined) {
+      this.inputText = this.$route.query.search
     }
   },
   mounted () {
@@ -164,8 +180,8 @@ export default {
     height: 0.774rem;
     width: 70%;
     margin: 0 auto;
-    background: #EEE;
-    color:#555;
+    background: #eee;
+    color: #555;
     font-size: 0.32rem;
   }
 }

@@ -10,7 +10,7 @@
                alt="">
         </span>
         <input type="search"
-               class="inputText">
+               class="inputText" v-model="text" @click="toSearch(text)">
       </div>
       <div slot="right"
            class="rightBtn">
@@ -19,59 +19,95 @@
                    class="moreBtn"></mt-button>
       </div>
     </mt-header>
-    <SortBtn @sort="resetThis"></SortBtn>
+    <SortBtn @sort="resetThis"
+             @changeClass="change"></SortBtn>
+    <Goods :goodlist="goodlist"
+           class="paD"
+           :type="changeClass"></Goods>
   </div>
 </template>
 <script>
 import SortBtn from '@/components/page/goodlist/SortBtn.vue'
+import Goods from '@/components/page/goodlist/Goods.vue'
 export default {
   data () {
     return {
+      // 请求参数
       keyBox: {
         act: 'goods',
         op: 'goods_list',
         keyword: '',
         page: '10',
         curpage: '1'
-      }
+      },
+      // 商品数据
+      goodlist: [],
+      changeClass: false, // 样式开关
+      text: '', // 搜索框内容
+      scrollKey: true, // 滚动加载开关
+      hasmore: false // 数据加载开关
     }
   },
   components: {
-    SortBtn
+    SortBtn,
+    Goods
   },
   methods: {
-    goto (path) {
+    goto (path) { // 路由跳转
       if (path === -1) {
         this.$router.go(-1)
       } else {
         this.$router.push(path)
       }
     },
-    resetThis (obj) {
+    resetThis (obj) { // 请求
       this.keyBox = Object.assign(this.keyBox, obj)
+      for (var i in this.keyBox) {
+        if (this.keyBox[i] === '') {
+          delete this.keyBox[i]
+        }
+      }
       this.axios.get('https://www.nanshig.com/mobile/index.php', {
         params: this.keyBox
       }).then(res => {
         console.log(res)
+        this.hasmore = res.data.hasmore // 是否还有更多
+        if (this.hasmore) {
+          this.scrollKey = true
+        } else {
+          this.scrollKey = false
+        }
+        this.goodlist = res.data.datas.goods_list
       }).catch(err => {
         console.log(err)
       })
+    },
+    change () { // 切换列表样式
+      this.changeClass = !this.changeClass
+    },
+    toSearch (text) {
+      this.$router.push({path: '/search', query: {search: text}})
     }
   },
-  created () {
+  created () { // 初始化
+    console.log(this.$route.query.search)
     let thiskeyword = this.$route.query.search
-    this.axios.get('https://www.nanshig.com/mobile/index.php', {
-      params: {
-        act: 'goods',
-        op: 'goods_list',
-        keyword: thiskeyword,
-        page: '10',
-        curpage: '1'
+    this.text = thiskeyword
+    this.keyBox.keyword = thiskeyword
+    this.resetThis()
+  },
+  mounted () { // 挂在滚动事件
+    let _this = this
+    window.addEventListener('scroll', () => {
+      // console.log(document.documentElement.clientHeight + document.documentElement.scrollTop, document.body.offsetHeight)
+      if (document.documentElement.clientHeight + document.documentElement.scrollTop >= document.body.offsetHeight) {
+        if (_this.scrollKey) {
+          _this.scrollKey = false
+          _this.keyBox.page = _this.keyBox.page * 1 + 10
+          // console.log(_this)
+          this.resetThis()
+        }
       }
-    }).then(res => {
-      console.log(res)
-    }).catch(err => {
-      console.log(err)
     })
   }
 }
@@ -122,5 +158,9 @@ export default {
       width: r(38.47px);
     }
   }
+}
+.paD {
+  padding-top: r(84px);
+  padding-bottom: r(55px);
 }
 </style>

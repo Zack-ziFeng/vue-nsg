@@ -7,7 +7,30 @@
 
 <script>
 import footerLy from '@/components/footer.vue'
+import { Indicator } from 'mint-ui'
+import axios from 'axios'
+console.log(axios)
+// 添加请求拦截器
+axios.interceptors.request.use(config => {
+  // 在发送请求之前做某事，比如说 设置loading动画显示
+  Indicator.open()
+  return config
+}, error => {
+  // 请求错误时做些事
+  Indicator.close()
+  return Promise.reject(error)
+})
 
+// 添加响应拦截器
+axios.interceptors.response.use(response => {
+  // 对响应数据做些事，比如说把loading动画关掉
+  Indicator.close()
+  return response
+}, error => {
+  // 请求错误时做些事
+  Indicator.close()
+  return Promise.reject(error)
+})
 export default {
   name: 'App',
   components: {

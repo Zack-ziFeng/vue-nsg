@@ -9,21 +9,23 @@
         </li>
         <li :class="{'sales': true,'isActive': sortActive === 'sales'}"
             @click="change('sales')">
-          <a href="javascript:;" @click="setActive('sales')">销量优先</a>
+          <a href="javascript:;"
+             @click="setActive('sales')">销量优先</a>
         </li>
         <li :class="{'filtrate': true,'isActive': sortActive === 'filtrate'}">
           <a href="javascript:;"
              @click="setActive('filtrate')">筛选<i></i></a>
         </li>
       </ul>
-      <div class="changeStyle"></div>
+      <div class="changeStyle" @click="changeClass"></div>
       <ul class="syntBox"
           v-show="synthesizeKey">
         <li v-for="(item,index) in synthesizeList"
             :key="item.text"
             @click="synthesizeActive(index,item.text)">
           <a href="javascript:;"
-             :class="{syntBoxAct:item.active}">{{item.text}}<i v-show="item.active"></i></a>
+             :class="{syntBoxAct:item.active}"
+             @click="change('synthesize',index)">{{item.text}}<i v-show="item.active"></i></a>
         </li>
       </ul>
     </div>
@@ -40,9 +42,9 @@
           <dl class="item">
             <dt>价格区间</dt>
             <dd class="price">
-              <input type="text"
+              <input type="number"
                      placeholder="最低价"
-                     v-model="filtrate[0].minimum"><span></span><input type="text"
+                     v-model="filtrate[0].minimum"><span></span><input type="number"
                      placeholder="最高价"
                      v-model="filtrate[0].highest">
             </dd>
@@ -51,11 +53,11 @@
             <dt>商品所在地</dt>
             <dd class="addr">
               <div>
-                <select>
+                <select v-model="filtrate[0].addrVal">
                   <option value="">不限</option>
-                  <option value="啦啦">啦啦</option>
-                  <option value="啦啦">啦啦</option>
-                  <option value="啦啦">啦啦</option>
+                  <option :value="item.area_id"
+                          v-for="item in filtrate[0].address"
+                          :key="item.area_id">{{item.area_name}}</option>
                 </select>
                 <i></i>
               </div>
@@ -100,34 +102,39 @@ export default {
     return {
       // 综合排序
       sortActive: 'synthesize',
-      sortActiveText: '综合筛选',
+      sortActiveText: '综合排序',
       synthesizeKey: false,
       synthesizeList: [
         {
-          text: '综合筛选',
+          text: '综合排序',
           key: '',
           order: '',
-          active: true
+          active: true,
+          type: 'synthesize'
         },
         {
           text: '价格从高到低',
           key: '3',
           order: '2',
-          active: false
+          active: false,
+          type: 'desc'
         },
         {
           text: '价格从低到高',
           key: '3',
           order: '1',
-          active: false
+          active: false,
+          type: 'asc'
         },
         {
           text: '人气排序',
           key: '2',
           order: '2',
-          active: false
+          active: false,
+          type: 'heat'
         }
       ],
+      req: {},
       // 筛选
       filtrateKey: false,
       filtrate: [{
@@ -136,27 +143,34 @@ export default {
         goodType: [
           {
             text: '赠品',
-            key: false
+            key: false,
+            type: 'gift'
           },
           {
             text: '团购',
-            key: false
+            key: false,
+            type: 'groupbuy'
           },
           {
             text: '限时折扣',
-            key: false
+            key: false,
+            type: 'xianshi'
           },
           {
             text: '虚拟',
-            key: false
+            key: false,
+            type: 'virtual'
           }
         ],
         storeType: [
           {
             text: '商家自营',
-            key: false
+            key: false,
+            type: 'own_shop'
           }
-        ]
+        ],
+        address: [],
+        addrVal: ''
       }
       ]
     }
@@ -198,25 +212,71 @@ export default {
       })
     },
     back () { // 返回
-      this.clearItem()
+      // this.clearItem()
       this.filtrateKey = false
     },
     submit () {
-      this.clearItem()
+      if (this.filtrate[0].minimum) {
+        this.req['price_from'] = this.filtrate[0].minimum
+      } else {
+        this.req.price_from = ''
+      }
+      if (this.filtrate[0].highest) {
+        this.req['price_to'] = this.filtrate[0].highest
+      } else {
+        this.req.price_to = ''
+      }
+      this.filtrate[0].goodType.forEach(item => {
+        if (item.key) {
+          this.req[item.type] = '1'
+        } else {
+          this.req[item.type] = ''
+        }
+      })
+      this.filtrate[0].storeType.forEach(item => {
+        if (item.key) {
+          this.req[item.type] = '1'
+        } else {
+          this.req[item.type] = ''
+        }
+      })
+      if (this.filtrate[0].addrVal) {
+        this.req.area_id = this.filtrate[0].addrVal
+      } else {
+        this.req.area_id = ''
+      }
       this.filtrateKey = false
+      this.$emit('sort', this.req)
     },
-    change (type) {
-      let obj = {}
+    change (type, index) {
       switch (type) {
         case 'sales':
-          obj.key = '1'
-          obj.order = '2'
+          this.req.key = '1'
+          this.req.order = '2'
+          break
+        case 'synthesize':
+          this.req.key = this.synthesizeList[index].key
+          this.req.order = this.synthesizeList[index].order
           break
       }
-      this.$emit('sort', obj)
+      this.$emit('sort', this.req)
+    },
+    changeClass () {
+      this.$emit('changeClass')
     }
   },
-  mounted () {
+  created () {
+    this.axios.get('https://www.nanshig.com/mobile/index.php', {
+      params: {
+        act: 'index',
+        op: 'search_adv'
+      }
+    }).then(res => {
+      this.filtrate[0].address = res.data.datas.area_list
+      // console.log(this.address)
+    }).catch(err => {
+      console.error(err)
+    })
   }
 }
 </script>
@@ -434,13 +494,14 @@ export default {
 }
 .more-enter-active,
 .more-leave-active {
-  transition: all .8s;
+  transition: all 0.8s;
 }
-.more-enter,.more-leave-to  {
+.more-enter,
+.more-leave-to {
   transform: translateX(100%);
 }
-.more-enter-to, .more-leave {
+.more-enter-to,
+.more-leave {
   transform: translateX(0);
 }
-
 </style>
