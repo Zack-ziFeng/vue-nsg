@@ -25,10 +25,43 @@
     <div id="style">
       <dl>
         <dt>已选</dt>
-        <dd v-for="(item, idx) in defaultStyle" :key="idx" class="select">{{item}}</dd>
+        <dd
+          v-for="(item, idx) in defaultStyle"
+          :key="idx"
+          :class="item==='' ? 'none' : 'selects'"
+        >{{item}}</dd>
         <dd class="right"></dd>
       </dl>
     </div>
+
+    <div id="shop">
+      <div class="top">
+        <img src="../../../../static/img/shop.png">
+        <h2>{{shopName}}</h2>
+        <span class="right"></span>
+      </div>
+      <div class="bottom">
+        <ul>
+          <li v-for="(item, idx) in grade" :key="idx">
+            <span>{{item}}</span>
+            <span></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="recommend">
+      <h3>店铺推荐</h3>
+      <ul>
+        <li v-for="(item, idx) in lists" :key="idx" :id="item.goods_id" @click="jumpTab($event)">
+          <img :src="item.goods_image_url">
+          <p>{{item.goods_name}}</p>
+          <span>￥{{item.goods_promotion_price}}</span>
+        </li>
+      </ul>
+    </div>
+
+    <div id="bottom"></div>
   </div>
 </template>
 
@@ -47,8 +80,19 @@ export default {
       defaultStyle: {
         color: "",
         size: ""
-      }
+      },
+      shopName: "",
+      grade: [],
+      lists: ""
     };
+  },
+  methods: {
+    jumpTab(ev) {
+      this.$router.push({
+        path: "/details",
+        query: { goodsId: ev.path[1].id }
+      });
+    }
   },
   beforeUpdate() {
     console.log(this.goodsMsg);
@@ -57,12 +101,19 @@ export default {
     this.address.site = this.goodsMsg.goods_hair_info.area_name;
     this.address.have = this.goodsMsg.goods_hair_info.if_store_cn;
     this.address.freight = this.goodsMsg.goods_hair_info.content;
-    this.defaultStyle.color = Object.values(
-      this.goodsMsg.goods_info.spec_value[1]
-    )[0];
-    this.defaultStyle.size = Object.values(
-      this.goodsMsg.goods_info.spec_value[15]
-    )[0];
+    this.shopName = this.goodsMsg.store_info.store_name;
+    if (this.goodsMsg.goods_info.spec_value) {
+      this.defaultStyle.color = Object.values(
+        this.goodsMsg.goods_info.spec_value[1]
+      )[0];
+      this.defaultStyle.size = Object.values(
+        this.goodsMsg.goods_info.spec_value[15]
+      )[0];
+    } else {
+      this.defaultStyle.color = "";
+      this.defaultStyle.size = "";
+    }
+    this.lists = this.goodsMsg.goods_commend_list;
   }
 };
 </script>
@@ -145,14 +196,18 @@ export default {
     margin-right: 0.3rem;
     float: left;
   }
-  .select {
+  .selects {
     float: left;
-    width: 0.8rem;
+    min-width: 0.8rem;
     text-align: center;
     border: 1px solid #888;
     line-height: 0.32rem;
     margin-right: 0.3rem;
     color: #333;
+    padding: 0 0.1rem;
+  }
+  .none {
+    border: none;
   }
   .right {
     float: right;
@@ -163,5 +218,77 @@ export default {
     border-bottom-color: #fff;
     transform: rotateZ(45deg) translateY(0.08rem);
   }
+}
+
+#shop {
+  padding: 0.2rem 0;
+  background-color: #f5f5f5;
+  .top {
+    overflow: hidden;
+    background-color: #fff;
+    padding: 0.15rem 0.2rem;
+    img {
+      width: 0.4rem;
+      height: 0.4rem;
+      float: left;
+    }
+    h2 {
+      float: left;
+      font-size: 0.3rem;
+      font-weight: normal;
+      margin-left: 0.12rem;
+    }
+    .right {
+      float: right;
+      width: 0.2rem;
+      height: 0.2rem;
+      border: 0.02rem solid #888;
+      border-left-color: #fff;
+      border-bottom-color: #fff;
+      transform: rotateZ(45deg) translateY(0.08rem);
+    }
+  }
+  .bottom {
+    background-color: #fff;
+  }
+}
+
+#recommend {
+  padding: 0.2rem;
+  h3 {
+    font-size: 0.1rem;
+    color: #888;
+    padding: 0.08rem 0;
+    margin-bottom: 0.02rem;
+  }
+  ul {
+    overflow: hidden;
+    li {
+      overflow: hidden;
+      float: left;
+      width: 1.5rem;
+      margin: 0.2rem;
+      margin-right: 0;
+      img {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+      p {
+        font-size: 0.12rem;
+        color: #888;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        float: left;
+      }
+      span {
+        font-size: 0.12rem;
+        float: left;
+      }
+    }
+  }
+}
+#bottom {
+  height: 0.84rem;
 }
 </style>
