@@ -27,12 +27,15 @@
            class="paD"
            :type="changeClass"
            @resetAll="resetAll"></Goods>
+    <to-top class="fixedTop" v-show="toTopShow"/>
   </div>
 </template>
 <script>
 import SortBtn from '@/components/page/goodlist/SortBtn.vue'
 import Goods from '@/components/page/goodlist/Goods.vue'
+import ToTop from '@/components/page/goodlist/ToTop.vue'
 export default {
+  inject: ['reload'],
   data () {
     return {
       // 请求参数
@@ -48,12 +51,14 @@ export default {
       changeClass: false, // 样式开关
       text: '', // 搜索框内容
       scrollKey: true, // 滚动加载开关
-      hasmore: false // 数据加载开关
+      hasmore: false, // 数据加载开关,
+      toTopShow: false // 滚动到顶部开关
     }
   },
   components: {
     SortBtn,
-    Goods
+    Goods,
+    ToTop
   },
   methods: {
     goto (path) { // 路由跳转
@@ -98,19 +103,33 @@ export default {
     change () { // 切换列表样式
       this.changeClass = !this.changeClass
     },
+    // 返回搜索页面
     toSearch (text) {
       this.$router.push({ path: '/search', query: { search: text } })
     },
     resetAll () {
-      this.keyBox = {
-        act: 'goods',
-        op: 'goods_list',
-        keyword: '',
-        page: '10',
-        curpage: '1'
-      }
-      console.log(this.keyBox)
+      this.reload()
       this.$router.push({ path: '/goodlist', query: { search: this.text } })
+    },
+    // 滚动加载
+    runLoad () {
+      // if (this.$route.path !== '/goodlist') return
+      // 滚动到可视区域的一半显示滚动到顶部按钮
+      if (document.documentElement.scrollTop >= document.documentElement.clientHeight / 2) {
+        this.toTopShow = true
+      } else {
+        this.toTopShow = false
+      }
+
+      // 滚动加载
+      if (document.documentElement.clientHeight + document.documentElement.scrollTop >= document.body.offsetHeight) {
+        if (this.scrollKey) {
+          this.scrollKey = false
+          this.keyBox.page = this.keyBox.page * 1 + 10
+          // console.log(_this)
+          this.resetThis()
+        }
+      }
     }
   },
   created () { // 初始化
@@ -121,18 +140,11 @@ export default {
     this.resetThis()
   },
   mounted () { // 挂在滚动事件
-    let _this = this
-    window.addEventListener('scroll', () => {
-      // console.log(document.documentElement.clientHeight + document.documentElement.scrollTop, document.body.offsetHeight)
-      if (document.documentElement.clientHeight + document.documentElement.scrollTop >= document.body.offsetHeight) {
-        if (_this.scrollKey) {
-          _this.scrollKey = false
-          _this.keyBox.page = _this.keyBox.page * 1 + 10
-          // console.log(_this)
-          this.resetThis()
-        }
-      }
-    })
+    // let _this = this
+    window.addEventListener('scroll', this.runLoad)
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.runLoad)
   }
 }
 </script>
@@ -140,6 +152,7 @@ export default {
 @function r($px) {
   @return $px / 50px * 1rem;
 }
+// 顶部搜索框
 .listTop {
   height: r(43px);
   padding: 0;
@@ -166,6 +179,8 @@ export default {
     background: #dd3000;
     width: r(210px);
     margin-left: r(-5px);
+    color: #fff;
+    font-size: r(14px);
     border-radius: 0 0.1rem 0.1rem 0;
   }
   .rightBtn {
@@ -183,8 +198,14 @@ export default {
     }
   }
 }
+// 筛选框定位
 .paD {
   padding-top: r(84px);
   padding-bottom: r(55px);
+}
+.fixedTop {
+  position: fixed;
+  bottom: r(80px);
+  right: r(10px);
 }
 </style>

@@ -9,7 +9,6 @@
 import footerLy from '@/components/footer.vue'
 import { Indicator } from 'mint-ui'
 import axios from 'axios'
-console.log(axios)
 // 添加请求拦截器
 axios.interceptors.request.use(config => {
   // 在发送请求之前做某事，比如说 设置loading动画显示
@@ -36,22 +35,22 @@ export default {
   components: {
     footerLy
   },
-  provide() {
+  provide () {
     return {
       reload: this.reload
     }
   },
   data () {
     return {
-      isRouterAlive: true //当前页面刷新
+      isRouterAlive: true // 当前页面刷新
     }
   },
   methods: {
-    reload() {
-      this.isRouterAlive = false;
-      this.$nextTick(function() {
-        this.isRouterAlive = true;
-      });
+    reload () {
+      this.isRouterAlive = false
+      this.$nextTick(function () {
+        this.isRouterAlive = true
+      })
     }
   }
 }
