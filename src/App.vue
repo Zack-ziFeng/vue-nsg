@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <router-view v-if="isRouterAlive"></router-view>
     <footerLy></footerLy>
   </div>
 </template>
@@ -35,6 +35,24 @@ export default {
   name: 'App',
   components: {
     footerLy
+  },
+  provide() {
+    return {
+      reload: this.reload
+    }
+  },
+  data () {
+    return {
+      isRouterAlive: true //当前页面刷新
+    }
+  },
+  methods: {
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(function() {
+        this.isRouterAlive = true;
+      });
+    }
   }
 }
 </script>

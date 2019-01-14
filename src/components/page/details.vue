@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mt-header>
+    <mt-header fixed=true>
       <router-link to="/" slot="left">
         <mt-button icon="back"></mt-button>
       </router-link>
@@ -22,12 +22,14 @@
         <Details-Goods :goods="data" :Imgs="Img" :goodsName="goods_name" :goodsMsg="goods_msg"></Details-Goods>
       </mt-tab-container-item>
       <mt-tab-container-item id="1">
-        <Details-Detail></Details-Detail>
+        <Details-Detail :goodsD="goodsD"></Details-Detail>
       </mt-tab-container-item>
       <mt-tab-container-item id="2">
         <Details-Evaluate></Details-Evaluate>
       </mt-tab-container-item>
     </mt-tab-container>
+
+    <Details-Footer></Details-Footer>
   </div>
 </template>
 
@@ -35,6 +37,7 @@
 import DetailsGoods from "@/components/page/details/DetailsGoods.vue";
 import DetailsDetail from "@/components/page/details/DetailsD.vue";
 import DetailsEvaluate from "@/components/page/details/DetailsEvaluate.vue";
+import DetailsFooter from "@/components/page/details/DetailsFooter.vue";
 
 export default {
   data() {
@@ -45,7 +48,8 @@ export default {
       Img: "",
       goods_name: "",
       goods_msg: "",
-      nav: ["商品", "详情", "评论"]
+      nav: ["商品", "详情", "评论"],
+      goodsD: ""
     };
   },
   methods: {
@@ -69,11 +73,23 @@ export default {
     }).catch(err=>{
       console.log(err);
     });
+
+    this.axios.get('https://www.nanshig.com/mobile/index.php', {params: {
+      act: "goods",
+      op: "goods_body",
+      goods_id: this.goodsId,
+      key: ""
+    }}).then(res=>{
+      this.goodsD = res;
+    }).catch(err=>{
+      console.log(err);
+    });
   },
   components: {
     DetailsGoods,
     DetailsDetail,
-    DetailsEvaluate
+    DetailsEvaluate,
+    DetailsFooter
   }
 };
 </script>
@@ -81,6 +97,9 @@ export default {
 <style lang="scss" scoped>
 .mint-header {
   background: #ff5001;
+}
+.mint-tab-container {
+  margin-top: 0.8rem;
 }
 #content {
   padding: 0 0.2rem;
