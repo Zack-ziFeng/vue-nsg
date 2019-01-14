@@ -5,14 +5,20 @@
     </router-link>
     <mt-button slot="right">
         <img src="../../../../static/img/search_ico.png" alt="" id="icon">
-        <input type="text" id="search">
+        <input type="text" id="search" @click="toSearch">
     </mt-button>
     <mt-button icon="more" slot="right"></mt-button>
   </mt-header>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    toSearch () {
+      this.$router.push({path: '/search'})
+    }
+  }
+}
 </script>
 
 <style scoped>

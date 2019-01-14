@@ -1,9 +1,9 @@
 <template>
   <div>
-    <mt-header fixed="true">
-      <router-link to="/" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
+    <mt-header fixed>
+      <div slot="left">
+        <mt-button icon="back" @click="backOne"></mt-button>
+      </div>
       <mt-button slot="right">
         <ul id="nav">
           <li
@@ -59,6 +59,9 @@ export default {
   methods: {
     changeTab(idx, path) {
       this.actId = idx.toString();
+    },
+    backOne () {
+      this.$router.go(-1)
     }
   },
   mounted() {
@@ -88,6 +91,11 @@ export default {
     }).catch(err=>{
       console.log(err);
     });
+  },
+  watch: {
+    goodsId () {
+      console.log(this.goodsId)
+    }
   },
   components: {
     DetailsGoods,

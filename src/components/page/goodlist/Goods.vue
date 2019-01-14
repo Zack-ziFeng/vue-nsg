@@ -3,7 +3,7 @@
     <ul :class="{'goodCon':type,'typeSecond':!type}"
         v-if="goodlist.length>0">
       <li v-for="good in goodlist"
-          :key="good.goods_id">
+          :key="good.goods_id" @click="showGood(good.goods_id)">
         <div class="goodImg">
           <img :src="good.goods_image_url"
                :alt="good.goods_name">
@@ -41,6 +41,9 @@ export default {
   methods: {
     reset () {
       this.$emit('resetAll')
+    },
+    showGood (id) {
+      this.$emit('showGood', id)
     }
   }
 }

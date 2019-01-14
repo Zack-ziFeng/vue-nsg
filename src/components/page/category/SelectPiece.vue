@@ -11,11 +11,9 @@
 
     <div id="items">
       <ul>
-        <li v-for="(item, idx) in itemsList" :key="idx" :id="item.gc_id">
-          <a href>
+        <li v-for="(item, idx) in itemsList" :key="idx" :id="item.gc_id" @click="showlist(item.gc_id)">
             <img :src="item.gc_image">
             <p>{{item.gc_name}}</p>
-          </a>
         </li>
       </ul>
     </div>
@@ -27,6 +25,11 @@ export default {
   props: ["content", "itemsList"],
   data() {
     return {};
+  },
+  methods: {
+    showlist (id) {
+      this.$emit('showList', id)
+    }
   }
 };
 </script>

@@ -14,7 +14,7 @@
         <span class="titleName">{{item.goods.title}}</span>
       </div>
       <ul class="goodCon">
-        <li v-for="good in item.goods.item" :key="good.goods_id">
+        <li v-for="good in item.goods.item" :key="good.goods_id" @click="showGood(good.goods_id)">
           <div class="goodImg">
             <img :src="good.goods_image"
                  :alt="good.goods_name">
@@ -40,6 +40,11 @@ export default {
   components: {
     headerLy
   },
+  methods: {
+    showGood (id) {
+      this.$router.push({path: '/details', query: {goodsId: id}})
+    }
+  },
   beforeMount () {
     this.axios.get('https://www.nanshig.com/mobile/index.php', {
       params: {
@@ -50,7 +55,6 @@ export default {
       this.goodlist = res.data.datas.filter((item, index) => {
         return index !== 0
       })
-      console.log(this.goodlist)
     }).catch(err => {
       console.log(err)
     })

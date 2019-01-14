@@ -1,5 +1,5 @@
 <template>
-  <mt-tabbar v-model="selected" :fixed = true v-show="show">
+  <mt-tabbar v-model="selected" :fixed = true>
     <template v-for="route in $router.options.routes">
       <mt-tab-item v-if="!route.hidden"
                    :id="route.path"
@@ -16,8 +16,7 @@
 export default {
   data () {
     return {
-      selected: '/',
-      show: true
+      selected: '/'
     }
   },
   methods: {
@@ -29,13 +28,6 @@ export default {
   },
   watch: {
     $route (to, from) {
-      let hideArr = ['/details']
-      if (hideArr.indexOf(this.$route.path) >= 0) {
-        console.log(1)
-        this.show = false
-      } else {
-        this.show = true
-      }
       var index = this.$route.path.slice(1).indexOf('/')
       var thispath
       if (index === -1) {

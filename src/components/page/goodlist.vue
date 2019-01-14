@@ -5,14 +5,16 @@
       <div slot="left">
         <mt-button icon="back"
                    @click="goto(-1)"></mt-button>
-        <span class="searchIcon">
-          <img src="/static/img/search_ico.png"
-               alt="">
-        </span>
-        <input type="search"
-               class="inputText"
-               v-model="text"
-               @click="toSearch(text)">
+        <div class="search_box">
+          <span class="searchIcon">
+            <img src="/static/img/search_ico.png"
+                 alt="">
+          </span>
+          <input type="search"
+                 class="inputText"
+                 v-model="text"
+                 @click="toSearch(text)">
+        </div>
       </div>
       <div slot="right"
            class="rightBtn">
@@ -26,8 +28,10 @@
     <Goods :goodlist="goodlist"
            class="paD"
            :type="changeClass"
-           @resetAll="resetAll"></Goods>
-    <to-top class="fixedTop" v-show="toTopShow"/>
+           @resetAll="resetAll"
+           @showGood="showGood"></Goods>
+    <to-top class="fixedTop"
+            v-show="toTopShow" />
   </div>
 </template>
 <script>
@@ -88,7 +92,6 @@ export default {
       this.axios.get('https://www.nanshig.com/mobile/index.php', {
         params: this.keyBox
       }).then(res => {
-        console.log(res, 1)
         this.hasmore = res.data.hasmore // 是否还有更多
         if (this.hasmore) {
           this.scrollKey = true
@@ -109,7 +112,11 @@ export default {
     },
     resetAll () {
       this.reload()
-      this.$router.push({ path: '/goodlist', query: { search: this.text } })
+      if (this.$route.query.type === 'cate') {
+        this.$router.push({ path: '/goodlist', query: { cate: this.keyBox.gc_id, type: 'cate' } })
+      } else {
+        this.$router.push({ path: '/goodlist', query: { search: this.text, type: 'search' } })
+      }
     },
     // 滚动加载
     runLoad () {
@@ -130,21 +137,34 @@ export default {
           this.resetThis()
         }
       }
+    },
+    // 跳转商品详情页面
+    showGood (id) {
+      this.$router.push({ path: '/details', query: { goodsId: id } })
     }
   },
   created () { // 初始化
     // console.log(this.$route.query.search)
-    let thiskeyword = this.$route.query.search
-    this.text = thiskeyword
-    this.keyBox.keyword = thiskeyword
+    let type = this.$route.query.type
+    if (type === 'search') {
+      let thiskeyword = this.$route.query.search
+      this.text = thiskeyword
+      this.keyBox.keyword = thiskeyword
+    } else {
+      let thisCate = this.$route.query.cate
+      delete this.keyBox['keyword']
+      this.keyBox.gc_id = thisCate
+    }
     this.resetThis()
   },
   mounted () { // 挂在滚动事件
     // let _this = this
     window.addEventListener('scroll', this.runLoad)
+    window.addEventListener('touchmove', this.runLoad)
   },
   destroyed () {
     window.removeEventListener('scroll', this.runLoad)
+    window.removeEventListener('touchmove', this.runLoad)
   }
 }
 </script>
@@ -160,7 +180,11 @@ export default {
   .mint-button {
     width: r(43px);
   }
-  .searchIcon {
+  .search_box {
+    background: #dd3000;
+    border-radius: 0.2rem;
+    display: inline-block;
+    .searchIcon {
     display: inline-block;
     background: #dd3000;
     width: r(30px);
@@ -181,7 +205,8 @@ export default {
     margin-left: r(-5px);
     color: #fff;
     font-size: r(14px);
-    border-radius: 0 0.1rem 0.1rem 0;
+    border-radius: 0.2rem
+  }
   }
   .rightBtn {
     span {

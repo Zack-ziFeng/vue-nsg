@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view v-if="isRouterAlive"></router-view>
-    <footerLy></footerLy>
+    <footerLy v-show="footerShow"></footerLy>
   </div>
 </template>
 
@@ -42,7 +42,8 @@ export default {
   },
   data () {
     return {
-      isRouterAlive: true // 当前页面刷新
+      isRouterAlive: true, // 当前页面刷新
+      footerShow: true
     }
   },
   methods: {
@@ -51,6 +52,25 @@ export default {
       this.$nextTick(function () {
         this.isRouterAlive = true
       })
+    }
+  },
+  mounted () {
+    let hideArr = ['/details']
+    if (hideArr.indexOf(this.$route.path) >= 0) {
+      console.log(1)
+      this.footerShow = false
+    } else {
+      this.footerShow = true
+    }
+  },
+  watch: {
+    $route (to, from) {
+      let hideArr = ['/details']
+      if (hideArr.indexOf(this.$route.path) >= 0) {
+        this.footerShow = false
+      } else {
+        this.footerShow = true
+      }
     }
   }
 }

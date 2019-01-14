@@ -69,12 +69,10 @@ export default {
       this.inputText = ''
     },
     goto (text) {
-      console.log(text)
-      this.$router.push({ path: '/goodlist', query: { search: text } })
+      this.$router.push({ path: '/goodlist', query: { search: text, type: 'search' } })
     }
   },
   created () {
-    console.log(this.$route)
     if (this.$route.query.search !== undefined) {
       this.inputText = this.$route.query.search
     }

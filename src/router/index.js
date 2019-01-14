@@ -105,15 +105,5 @@ const routes = [{
 let router = new Router({
   routes
 })
-router.beforeEach((to, from, next) => {
-  // 要进入to路由，必须调用next()方法
-  Indicator.open('加载中...')
-  // console.log('to')
-  next()
-})
-router.afterEach((to, from) => {
-  Indicator.close()
-  // console.log('after')
-})
 
 export default router

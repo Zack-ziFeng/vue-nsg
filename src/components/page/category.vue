@@ -6,7 +6,7 @@
       <mt-tab-item :id="idx + 1 + ''" v-for="(item, idx) in dataTab" :key="idx">{{item.gc_name}}</mt-tab-item>
     </mt-navbar>
 
-    <Select-Piece :content="dataText" :itemsList="itemslist"></Select-Piece>
+    <Select-Piece :content="dataText" :itemsList="itemslist" @showList="showList"></Select-Piece>
 
     <Items-Recommend :list="recommend"></Items-Recommend>
   </div>
@@ -26,6 +26,11 @@ export default {
       itemslist: "",
       recommend: ""
     };
+  },
+  methods: {
+    showList (id) {
+      this.$router.push({path: '/goodlist', query: {cate: id, type: 'cate'}})
+    }
   },
   components: {
     SelectPiece,
@@ -49,7 +54,6 @@ export default {
         })
         .then(res => {
           this.itemslist = res.data.datas.class_list[0].child;
-          console.log('itemslist', this.itemslist)
           //商品推荐
           this.axios
             .get("https://www.nanshig.com/mobile/index.php", {
@@ -62,7 +66,6 @@ export default {
             })
             .then(res => {
               this.recommend = res.data.datas.goods_list;
-              console.log('recommend', this.recommend);
             })
             .catch(err => {
               console.log(err);
