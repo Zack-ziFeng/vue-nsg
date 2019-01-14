@@ -10,7 +10,9 @@
                alt="">
         </span>
         <input type="search"
-               class="inputText" v-model="text" @click="toSearch(text)">
+               class="inputText"
+               v-model="text"
+               @click="toSearch(text)">
       </div>
       <div slot="right"
            class="rightBtn">
@@ -23,7 +25,8 @@
              @changeClass="change"></SortBtn>
     <Goods :goodlist="goodlist"
            class="paD"
-           :type="changeClass"></Goods>
+           :type="changeClass"
+           @resetAll="resetAll"></Goods>
   </div>
 </template>
 <script>
@@ -61,7 +64,17 @@ export default {
       }
     },
     resetThis (obj) { // 请求
-      this.keyBox = Object.assign(this.keyBox, obj)
+      if (obj === 'all') {
+        this.keyBox = {
+          act: 'goods',
+          op: 'goods_list',
+          keyword: '',
+          page: '10',
+          curpage: '1'
+        }
+      } else {
+        this.keyBox = Object.assign(this.keyBox, obj)
+      }
       for (var i in this.keyBox) {
         if (this.keyBox[i] === '') {
           delete this.keyBox[i]
@@ -70,7 +83,7 @@ export default {
       this.axios.get('https://www.nanshig.com/mobile/index.php', {
         params: this.keyBox
       }).then(res => {
-        console.log(res)
+        console.log(res, 1)
         this.hasmore = res.data.hasmore // 是否还有更多
         if (this.hasmore) {
           this.scrollKey = true
@@ -86,11 +99,22 @@ export default {
       this.changeClass = !this.changeClass
     },
     toSearch (text) {
-      this.$router.push({path: '/search', query: {search: text}})
+      this.$router.push({ path: '/search', query: { search: text } })
+    },
+    resetAll () {
+      this.keyBox = {
+        act: 'goods',
+        op: 'goods_list',
+        keyword: '',
+        page: '10',
+        curpage: '1'
+      }
+      console.log(this.keyBox)
+      this.$router.push({ path: '/goodlist', query: { search: this.text } })
     }
   },
   created () { // 初始化
-    console.log(this.$route.query.search)
+    // console.log(this.$route.query.search)
     let thiskeyword = this.$route.query.search
     this.text = thiskeyword
     this.keyBox.keyword = thiskeyword

@@ -13,7 +13,6 @@
   </mt-tabbar>
 </template>
 <script>
-import { Tabbar, TabItem } from 'mint-ui'
 export default {
   data () {
     return {
@@ -27,8 +26,6 @@ export default {
     }
   },
   components: {
-    Tabbar,
-    TabItem
   },
   watch: {
     $route (to, from) {
