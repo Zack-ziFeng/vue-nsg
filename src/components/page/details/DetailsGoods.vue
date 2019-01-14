@@ -68,6 +68,7 @@
 <script>
 export default {
   props: ["goods", "Imgs", "goodsName", "goodsMsg"],
+  inject: ['reload'],
   data() {
     return {
       address: {
@@ -88,6 +89,7 @@ export default {
   },
   methods: {
     jumpTab(ev) {
+      this.reload();
       this.$router.push({
         path: "/details",
         query: { goodsId: ev.path[1].id }
