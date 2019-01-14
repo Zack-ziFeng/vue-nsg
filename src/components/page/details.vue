@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mt-header fixed=true>
+    <mt-header fixed="true">
       <router-link to="/" slot="left">
         <mt-button icon="back"></mt-button>
       </router-link>
@@ -29,7 +29,9 @@
       </mt-tab-container-item>
     </mt-tab-container>
 
-    <Details-Footer></Details-Footer>
+    <Details-Footer v-show="isShow"></Details-Footer>
+    <D-Footer v-show="!isShow"></D-Footer>
+
   </div>
 </template>
 
@@ -38,6 +40,7 @@ import DetailsGoods from "@/components/page/details/DetailsGoods.vue";
 import DetailsDetail from "@/components/page/details/DetailsD.vue";
 import DetailsEvaluate from "@/components/page/details/DetailsEvaluate.vue";
 import DetailsFooter from "@/components/page/details/DetailsFooter.vue";
+import DFooter from "@/components/page/details/DetailsFooter2.vue"
 
 export default {
   data() {
@@ -49,7 +52,8 @@ export default {
       goods_name: "",
       goods_msg: "",
       nav: ["商品", "详情", "评论"],
-      goodsD: ""
+      goodsD: "",
+      isShow: true
     };
   },
   methods: {
@@ -89,7 +93,8 @@ export default {
     DetailsGoods,
     DetailsDetail,
     DetailsEvaluate,
-    DetailsFooter
+    DetailsFooter,
+    DFooter
   }
 };
 </script>
