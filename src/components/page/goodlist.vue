@@ -30,8 +30,7 @@
            :type="changeClass"
            @resetAll="resetAll"
            @showGood="showGood"></Goods>
-    <to-top class="fixedTop"
-            v-show="toTopShow" />
+    <to-top class="fixedTop" v-show="toTopShow"/>
   </div>
 </template>
 <script>
@@ -121,15 +120,18 @@ export default {
     // 滚动加载
     runLoad () {
       // if (this.$route.path !== '/goodlist') return
+      var thisTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      var clientH = window.innerHeight || document.body.clientHeight || document.documentElement.clientHeight
       // 滚动到可视区域的一半显示滚动到顶部按钮
-      if (document.documentElement.scrollTop >= document.documentElement.clientHeight / 2) {
+      if (thisTop >= clientH) {
         this.toTopShow = true
       } else {
         this.toTopShow = false
       }
-
+      var bdh = document.body.offsetHeight || document.documentElement.offsetHeight
+      // console.log(thisTop, clientH, bdh)
       // 滚动加载
-      if (document.documentElement.clientHeight + document.documentElement.scrollTop >= document.body.offsetHeight) {
+      if (clientH + thisTop >= bdh) {
         if (this.scrollKey) {
           this.scrollKey = false
           this.keyBox.page = this.keyBox.page * 1 + 10
@@ -232,5 +234,64 @@ export default {
   position: fixed;
   bottom: r(80px);
   right: r(10px);
+}
+.typeSecond {
+  // margin-top: r(5px);
+  // padding-top: r(4px);
+  li:first-child {
+    margin-top: r(3px);
+  }
+  li {
+    display: flex;
+    font-size: r(14px);
+    background: #fff;
+    .goodImg {
+      // flex:1;
+      width: r(102px);
+      height: r(102px);
+      padding: r(7.5px);
+      img {
+        width: 100%;
+      }
+    }
+    .goodMess {
+      flex: 1;
+      padding: r(7.6px) r(7.6px) 0 0;
+      border-bottom: r(1px) solid #eee;
+      .goodName {
+        height: r(32px);
+        line-height: r(17px);
+        font-size: r(14px);
+        overflow: hidden;
+      }
+      .goodPrice {
+        padding-top: r(24px);
+        font-size: r(12px);
+        // line-height: 0.54rem;
+        height: 0.54rem;
+        color: #ec5464;
+        span {
+          font-size: r(18px);
+        }
+      }
+      .otherParams {
+        display: flex;
+        justify-content: space-between;
+        font-size: r(12px);
+        span {
+          color: #888;
+          em {
+            font-style: normal;
+            color: #000;
+            font-weight: bold;
+            margin-left: r(4px);
+          }
+        }
+        .store {
+          margin-right: r(26px);
+        }
+      }
+    }
+  }
 }
 </style>
