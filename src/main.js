@@ -5,10 +5,12 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import Vueaxios from 'vue-axios'
+import Vuex from 'vuex'
 
 // 引入mint-ui组件和css
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
+import store from './store'
 
 // use
 Vue.use(MintUI)
@@ -23,5 +25,6 @@ new Vue({
   components: {
     App
   },
-  template: '<App/>'
+  template: '<App/>',
+  store
 })

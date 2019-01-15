@@ -18,7 +18,6 @@ import Search from '@/components/page/search.vue'
 // 商品列表
 import GoodList from '@/components/page/goodlist.vue'
 import Details from '@/components/page/details.vue'
-import { Indicator } from 'mint-ui'
 
 Vue.use(Router)
 

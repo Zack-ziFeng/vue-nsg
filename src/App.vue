@@ -55,7 +55,7 @@ export default {
     }
   },
   mounted () {
-    let hideArr = ['/details']
+    let hideArr = ['/details', '/cart']
     if (hideArr.indexOf(this.$route.path) >= 0) {
       console.log(1)
       this.footerShow = false
@@ -65,7 +65,7 @@ export default {
   },
   watch: {
     $route (to, from) {
-      let hideArr = ['/details']
+      let hideArr = ['/details', '/cart']
       if (hideArr.indexOf(this.$route.path) >= 0) {
         this.footerShow = false
       } else {

@@ -10,7 +10,7 @@ export default {
         if (thisTop === 0) {
           clearInterval(timer)
         }
-        let ispeed = Math.floor(-thisTop / 15)
+        let ispeed = Math.floor(-thisTop / 6)
         document.documentElement.scrollTop = document.body.scrollTop = thisTop + ispeed
       }, 16)
     }

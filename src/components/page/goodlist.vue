@@ -30,7 +30,8 @@
            :type="changeClass"
            @resetAll="resetAll"
            @showGood="showGood"></Goods>
-    <to-top class="fixedTop" v-show="toTopShow"/>
+    <to-top class="fixedTop"
+            v-show="toTopShow" />
   </div>
 </template>
 <script>
@@ -187,28 +188,28 @@ export default {
     border-radius: 0.2rem;
     display: inline-block;
     .searchIcon {
-    display: inline-block;
-    background: #dd3000;
-    width: r(30px);
-    height: r(30px);
-    border-radius: 0.1rem 0 0 0.1rem;
-    vertical-align: middle;
-    line-height: r(30px);
-    text-align: center;
-    img {
-      width: 0.25rem;
-      height: 0.25rem;
+      display: inline-block;
+      background: #dd3000;
+      width: r(30px);
+      height: r(30px);
+      border-radius: 0.1rem 0 0 0.1rem;
+      vertical-align: middle;
+      line-height: r(30px);
+      text-align: center;
+      img {
+        width: 0.25rem;
+        height: 0.25rem;
+      }
     }
-  }
-  .inputText {
-    height: r(30px);
-    background: #dd3000;
-    width: r(210px);
-    margin-left: r(-5px);
-    color: #fff;
-    font-size: r(14px);
-    border-radius: 0.2rem
-  }
+    .inputText {
+      height: r(30px);
+      background: #dd3000;
+      width: r(210px);
+      margin-left: r(-5px);
+      color: #fff;
+      font-size: r(14px);
+      border-radius: 0.2rem;
+    }
   }
   .rightBtn {
     span {
