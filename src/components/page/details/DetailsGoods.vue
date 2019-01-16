@@ -53,7 +53,7 @@
     <div id="recommend">
       <h3>店铺推荐</h3>
       <ul>
-        <li v-for="(item, idx) in lists" :key="idx" :id="item.goods_id" @click="jumpTab($event)">
+        <li v-for="(item, idx) in lists" :key="idx" :id="item.goods_id" @click="jumpTab(item.goods_id)">
           <img :src="item.goods_image_url">
           <p>{{item.goods_name}}</p>
           <span>￥{{item.goods_promotion_price}}</span>
@@ -88,11 +88,11 @@ export default {
     };
   },
   methods: {
-    jumpTab(ev) {
+    jumpTab(id) {
       this.reload();
-      this.$router.push({
+      this.$router.replace({
         path: "/details",
-        query: { goodsId: ev.path[1].id }
+        query: { goodsId: id }
       });
     }
   },

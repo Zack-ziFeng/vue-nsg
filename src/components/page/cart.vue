@@ -54,7 +54,8 @@
     </div>
     <div class="total">
       <div class="check">
-        <input type="checkbox" v-model="checkAll">
+        <input type="checkbox"
+               v-model="checkAll">
       </div>
       <div class="totalPrice">
         合计总金额：<em>￥</em><span>{{total}}</span>
@@ -69,10 +70,11 @@
 export default {
   data () {
     return {
-      cartList: []
+      cartList: [] // 列表数据
     }
   },
   computed: {
+    // 总数
     total () {
       let tot = 0
       this.cartList.forEach(item => {
@@ -85,6 +87,7 @@ export default {
       tot = tot !== 0 ? tot.toFixed(2) : '00.00'
       return tot
     },
+    // 店铺全选
     checkAll: {
       get () {
         return this.cartList.every(item => {
@@ -102,32 +105,37 @@ export default {
     }
   },
   methods: {
+    // 减少数量
     sub (index, idx, id) {
       let num = this.cartList[index].cart[idx].num
-      num = --num
       if (num > 1) {
-        this.$store.commit('cartListChange', {num, id})
+        num = --num
+        this.$store.commit('cartListChange', { num, id })
         this.cartList[index].cart[idx].num = num
       }
     },
+    // 添加数量
     add (index, idx, id) {
       let num = this.cartList[index].cart[idx].num
-      num = ++num
       if (num < 100) {
-        this.$store.commit('cartListChange', {num, id})
+        num = ++num
+        this.$store.commit('cartListChange', { num, id })
         this.cartList[index].cart[idx].num = num
       }
     },
+    // 返回上一页
     backOne () {
       this.$router.go(-1)
     },
+    // 删除
     remove (index, idx, id) {
-      this.$store.commit('removeList', {id})
+      this.$store.commit('removeList', { id })
       this.cartList[index].cart.splice(idx, 1)
       if (this.cartList[index].cart.length <= 0) { // 数组为空时删除该数组
         this.cartList.splice(index, 1)
       }
     },
+    // 单选
     checkIt (index, idx, checked) {
       this.cartList[index].cart[idx].selected = checked
       this.cartList[index].selected = this.cartList[index].cart.every(item => {
@@ -135,6 +143,7 @@ export default {
       })
       // console.log(this.cartList[index].cart[idx].selected)
     },
+    // 全选
     checkThisAll (index, checked) {
       // console.log(checked)
       this.cartList[index].selected = checked
@@ -145,6 +154,7 @@ export default {
     }
   },
   mounted () {
+    // 购物车数据转换成店铺列表
     let arr = this.$store.state.cartList
     let arr2 = arr.map(item => {
       return item.storeName

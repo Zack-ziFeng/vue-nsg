@@ -5,7 +5,7 @@
       <li v-for="(item, idx) in list"
           :key="idx"
           :id="item.goods_id"
-          @click="jumpDetails($event)">
+          @click="jumpDetails(item.goods_id)">
         <a>
           <img :src="item.goods_image_url">
           <h3>{{item.goods_name}}</h3>
@@ -21,8 +21,9 @@
 export default {
   props: ['list'],
   methods: {
-    jumpDetails(ev){
-      this.$router.push({path:'/details', query:{goodsId: ev.path[2].id}});
+    jumpDetails(id){
+      // console.log(ev.path[2].id)
+      this.$router.push({path:'/details', query:{goodsId: id}});
     }
   }
 }
