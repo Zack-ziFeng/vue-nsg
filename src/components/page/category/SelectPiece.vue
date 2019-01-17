@@ -2,11 +2,6 @@
   <div>
     <mt-header title>
       <mt-button icon slot="left">{{content}}</mt-button>
-      <router-link to="/" slot="right">
-        <mt-button icon>
-          <i class="arrow-r"></i>
-        </mt-button>
-      </router-link>
     </mt-header>
 
     <div id="items">
@@ -30,6 +25,12 @@ export default {
     showlist (id) {
       this.$emit('showList', id)
     }
+  },
+  beforeUpdate () {
+    let imgArr = document.querySelectorAll('#items img')
+    imgArr.forEach(item => {
+      item.setAttribute('src', '/static/img/timg.gif');
+    });
   }
 };
 </script>

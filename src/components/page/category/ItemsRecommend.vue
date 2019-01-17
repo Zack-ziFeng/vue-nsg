@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="content">
     <h2>商品推荐</h2>
     <ul>
       <li v-for="(item, idx) in list"
@@ -25,6 +25,12 @@ export default {
       // console.log(ev.path[2].id)
       this.$router.push({path:'/details', query:{goodsId: id}});
     }
+  },
+  beforeUpdate () {
+    let imgArr = document.querySelectorAll('#content img');
+    imgArr.forEach(item => {
+      item.setAttribute('src', '/static/img/timg.gif');
+    });
   }
 }
 </script>

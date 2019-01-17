@@ -10,17 +10,18 @@
       <div class="left">￥{{money}}</div>
       <div class="right">销量：{{num}}</div>
     </div>
-    <div id="address">
+    <div id="address" @click="jumpMap()">
       <div class="left">送至</div>
       <div class="right">
         <dl>
           <dt>
-            <span class="site">{{address.site}}</span>
+            <span class="site">{{loca}}</span>
             <span class="have">{{address.have}}</span>
           </dt>
           <dd>{{address.freight}}</dd>
         </dl>
       </div>
+      <div class="arror"></div>
     </div>
     <div id="style">
       <dl>
@@ -53,7 +54,12 @@
     <div id="recommend">
       <h3>店铺推荐</h3>
       <ul>
-        <li v-for="(item, idx) in lists" :key="idx" :id="item.goods_id" @click="jumpTab(item.goods_id)">
+        <li
+          v-for="(item, idx) in lists"
+          :key="idx"
+          :id="item.goods_id"
+          @click="jumpTab(item.goods_id)"
+        >
           <img :src="item.goods_image_url">
           <p>{{item.goods_name}}</p>
           <span>￥{{item.goods_promotion_price}}</span>
@@ -68,7 +74,7 @@
 <script>
 export default {
   props: ["goods", "Imgs", "goodsName", "goodsMsg"],
-  inject: ['reload'],
+  inject: ["reload"],
   data() {
     return {
       address: {
@@ -84,7 +90,8 @@ export default {
       },
       shopName: "",
       grade: [],
-      lists: ""
+      lists: "",
+      loca: "全国"
     };
   },
   methods: {
@@ -94,6 +101,9 @@ export default {
         path: "/details",
         query: { goodsId: id }
       });
+    },
+    jumpMap() {
+      this.$router.replace({path: "/map"});
     }
   },
   beforeUpdate() {
@@ -184,6 +194,15 @@ export default {
     dd {
       color: #888;
     }
+  }
+  .arror {
+    float: right;
+    width: 0.2rem;
+    height: 0.2rem;
+    border: 0.02rem solid #888;
+    border-left-color: #fff;
+    border-bottom-color: #fff;
+    transform: translate(-0.1rem, 0.35rem) rotateZ(45deg);
   }
 }
 #style {

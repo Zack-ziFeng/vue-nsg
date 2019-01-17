@@ -3,11 +3,11 @@
     <div id="btn">
       <div class="left">
         <div class="l_left">
-          <img src="../../../../static/img/kufu.png">
+          <img src="/static/img/kufu.png">
           <span>客服</span>
         </div>
         <div class="l_right" @click="jumpCart()">
-          <img src="../../../../static/img/cart.png">
+          <img src="/static/img/cart.png">
           <span>购物车</span>
         </div>
       </div>

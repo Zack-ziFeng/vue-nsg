@@ -14,10 +14,10 @@
 <script>
 import SelectPiece from "@/components/page/category/SelectPiece.vue";
 import ItemsRecommend from "@/components/page/category/ItemsRecommend.vue";
-import CateHead from '@/components/page/category/CateHead.vue';
+import CateHead from "@/components/page/category/CateHead.vue";
 
 export default {
-  data () {
+  data() {
     return {
       selected: "1",
       dataTab: "",
@@ -28,8 +28,11 @@ export default {
     };
   },
   methods: {
-    showList (id) {
-      this.$router.push({path: '/goodlist', query: {cate: id, type: 'cate'}})
+    showList(id) {
+      this.$router.push({
+        path: "/goodlist",
+        query: { cate: id, type: "cate" }
+      });
     }
   },
   components: {
@@ -54,22 +57,22 @@ export default {
         })
         .then(res => {
           this.itemslist = res.data.datas.class_list[0].child;
-          //商品推荐
-          this.axios
-            .get("https://www.nanshig.com/mobile/index.php", {
-              params: {
-                act: "goods",
-                op: "goods_list",
-                gc_id: val,
-                page: "20"
-              }
-            })
-            .then(res => {
-              this.recommend = res.data.datas.goods_list;
-            })
-            .catch(err => {
-              console.log(err);
-            });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+      this.axios
+        .get("https://www.nanshig.com/mobile/index.php", {
+          params: {
+            act: "goods",
+            op: "goods_list",
+            gc_id: val,
+            page: "20"
+          }
+        })
+        .then(res => {
+          this.recommend = res.data.datas.goods_list;
         })
         .catch(err => {
           console.log(err);

@@ -18,6 +18,7 @@ import Search from '@/components/page/search.vue'
 // 商品列表
 import GoodList from '@/components/page/goodlist.vue'
 import Details from '@/components/page/details.vue'
+import Maps from '@/components/page/map.vue'
 
 Vue.use(Router)
 
@@ -93,6 +94,12 @@ const routes = [{
   name: '详情页',
   hidden: true,
   component: Details
+},
+{
+  path: '/map',
+  name: '位置',
+  hidden: true,
+  component: Maps
 },
 {
   path: '*',
