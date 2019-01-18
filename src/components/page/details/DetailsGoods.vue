@@ -110,7 +110,6 @@ export default {
     }
   },
   beforeUpdate() {
-    console.log(this.locas);
     this.money = this.goodsMsg.goods_info.goods_price;
     this.num = this.goodsMsg.goods_info.goods_salenum;
     this.address.site = this.goodsMsg.goods_hair_info.area_name;

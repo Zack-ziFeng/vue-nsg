@@ -29,8 +29,7 @@
       </mt-tab-container-item>
     </mt-tab-container>
 
-    <Details-Footer v-show="isShow"></Details-Footer>
-    <D-Footer v-show="!isShow"></D-Footer>
+    <Details-Footer :size="sSize" :color="sColor" :now="sNow" :img="sImg" :name="goods_name.split(' ')[0]"></Details-Footer>
 
   </div>
 </template>
@@ -40,7 +39,6 @@ import DetailsGoods from "@/components/page/details/DetailsGoods.vue";
 import DetailsDetail from "@/components/page/details/DetailsD.vue";
 import DetailsEvaluate from "@/components/page/details/DetailsEvaluate.vue";
 import DetailsFooter from "@/components/page/details/DetailsFooter.vue";
-import DFooter from "@/components/page/details/DetailsFooter2.vue"
 
 export default {
   data() {
@@ -53,8 +51,11 @@ export default {
       goods_msg: "",
       nav: ["商品", "详情", "评论"],
       goodsD: "",
-      isShow: true,
-      loca: ""
+      loca: "",
+      sColor: "",
+      sSize: "",
+      sNow: "",
+      sImg: ""
     };
   },
   methods: {
@@ -78,7 +79,12 @@ export default {
       this.data = res.data.datas;
       this.Img = this.data.goods_image.split(',');
       this.goods_name = this.data.goods_info.goods_name;
+      console.log(this.data);
       this.goods_msg = this.data;
+      this.sImg = Object.values(Object.values(this.data.spec_image));
+      this.sColor = Object.values(Object.values(this.data.goods_info.spec_value)[0]);
+      this.sSize = Object.values(Object.values(this.data.goods_info.spec_value)[1]);
+      this.sNow = Object.values(Object.values(this.data.goods_info.goods_spec));
     }).catch(err=>{
       console.log(err);
     });
@@ -103,8 +109,7 @@ export default {
     DetailsGoods,
     DetailsDetail,
     DetailsEvaluate,
-    DetailsFooter,
-    DFooter
+    DetailsFooter
   }
 };
 </script>
