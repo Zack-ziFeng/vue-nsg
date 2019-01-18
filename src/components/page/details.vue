@@ -19,7 +19,7 @@
 
     <mt-tab-container v-model="actId">
       <mt-tab-container-item id="0">
-        <Details-Goods :goods="data" :Imgs="Img" :goodsName="goods_name" :goodsMsg="goods_msg"></Details-Goods>
+        <Details-Goods :goods="data" :Imgs="Img" :goodsName="goods_name" :goodsMsg="goods_msg" :locas="loca"></Details-Goods>
       </mt-tab-container-item>
       <mt-tab-container-item id="1">
         <Details-Detail :goodsD="goodsD"></Details-Detail>
@@ -53,7 +53,8 @@ export default {
       goods_msg: "",
       nav: ["商品", "详情", "评论"],
       goodsD: "",
-      isShow: true
+      isShow: true,
+      loca: ""
     };
   },
   methods: {
@@ -66,6 +67,7 @@ export default {
   },
   mounted() {
     this.goodsId = this.$route.query.goodsId;
+    this.loca = this.$route.query.loca;
 
     this.axios.get('https://www.nanshig.com/mobile/index.php', {params: {
       act: "goods",

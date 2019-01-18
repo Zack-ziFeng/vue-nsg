@@ -73,7 +73,7 @@
 
 <script>
 export default {
-  props: ["goods", "Imgs", "goodsName", "goodsMsg"],
+  props: ["goods", "Imgs", "goodsName", "goodsMsg", "locas"],
   inject: ["reload"],
   data() {
     return {
@@ -103,11 +103,14 @@ export default {
       });
     },
     jumpMap() {
-      this.$router.replace({path: "/map"});
+      this.$router.push({
+        path: "/map",
+        query: { url: this.$router.history.current.fullPath }
+      });
     }
   },
   beforeUpdate() {
-    console.log(this.goodsMsg);
+    console.log(this.locas);
     this.money = this.goodsMsg.goods_info.goods_price;
     this.num = this.goodsMsg.goods_info.goods_salenum;
     this.address.site = this.goodsMsg.goods_hair_info.area_name;
@@ -126,6 +129,21 @@ export default {
       this.defaultStyle.size = "";
     }
     this.lists = this.goodsMsg.goods_commend_list;
+
+    if (this.locas !== undefined) {
+      if (this.locas[this.locas.length - 1] === "三级地区") {
+        this.locas.splice(this.locas.length - 1, 1);
+        this.loca = "";
+        this.locas.forEach(item => {
+          this.loca += ` ${item}`;
+        });
+      } else {
+        this.loca = "";
+        this.locas.forEach(item => {
+          this.loca += ` ${item}`;
+        });
+      }
+    }
   }
 };
 </script>

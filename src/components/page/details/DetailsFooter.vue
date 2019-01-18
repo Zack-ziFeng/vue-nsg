@@ -71,7 +71,7 @@ export default {
     span {
       display: inline-block;
       text-align: center;
-      padding: 0.27rem 0.2rem;
+      padding: 0.277rem 0.2rem;
       font-weight: bold;
       color: #fff;
       &:first-child {

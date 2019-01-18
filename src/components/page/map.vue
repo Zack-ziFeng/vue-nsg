@@ -1,9 +1,7 @@
 <template>
   <div>
     <mt-header title="选择地区" fixed>
-      <router-link to="/" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
+      <mt-button icon="back" slot="left" @click="back()"></mt-button>
     </mt-header>
     <div id="top"></div>
     <div id="nav">
@@ -11,18 +9,14 @@
         <li v-for="(item, idx) in navs" :key="idx" :class="{'active':idx === active}">{{item}}</li>
       </ul>
     </div>
-    <div id="loca">
-      <ul>
-        <li v-for="(item, idx) in loca" :key="idx" :id="item.area_id">
-          <span class="left">{{item.area_name}}</span>
-          <span class="right"></span>
-        </li>
-      </ul>
-    </div>
+    <Tier-Loca :locas="loca" :idx="active" @pushLoca="getLoca"></Tier-Loca>
+    <div id="bottom"></div>
   </div>
 </template>
 
 <script>
+import TierLoca from "@/components/page/map/TierLoca.vue";
+
 export default {
   data() {
     return {
@@ -30,6 +24,41 @@ export default {
       active: 0,
       loca: ""
     };
+  },
+  components: {
+    TierLoca
+  },
+  methods: {
+    getLoca(item, idx) {
+      this.navs.splice(this.active, 1, item.area_name);
+      this.active = idx + 1;
+      this.loca = [];
+      this.axios
+        .get("https://www.nanshig.com/mobile/index.php", {
+          params: {
+            act: "area",
+            op: "area_list",
+            area_id: item.area_id
+          }
+        })
+        .then(res => {
+          if (res.data.datas.area_list.length > 0) {
+            this.loca = res.data.datas.area_list;
+          } else {
+            //this.$route.query.url
+            this.$router.replace({
+              path: this.$route.query.url,
+              query: { loca: this.navs }
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    back() {
+      this.$router.go(-1);
+    }
   },
   mounted() {
     this.axios
@@ -42,7 +71,6 @@ export default {
       })
       .then(res => {
         this.loca = res.data.datas.area_list;
-        console.log(this.loca);
       })
       .catch(err => {
         console.log(err);
@@ -67,6 +95,7 @@ export default {
     width: 100%;
     overflow: hidden;
     background: #fff;
+    z-index: 9;
     li {
       float: left;
       font-size: 0.25rem;
@@ -74,6 +103,9 @@ export default {
       line-height: 0.85rem;
       width: 33.3%;
       border-bottom: 0.06rem solid #ccc;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .active {
       border-bottom-color: #ff5001;
@@ -82,26 +114,7 @@ export default {
   }
 }
 
-#loca {
-  margin-top: 0.9rem;
-  ul {
-    li {
-      background-color: #fff;
-      font-size: 0.35rem;
-      line-height: 0.9rem;
-      border-bottom: 0.03rem solid #eee;
-      padding: 0 0.4rem;
-      overflow: hidden;
-    }
-    .right {
-      float: right;
-      width: 0.2rem;
-      height: 0.2rem;
-      border: 0.02rem solid #888;
-      border-left-color: #fff;
-      border-bottom-color: #fff;
-      transform: translateY(0.35rem) rotateZ(45deg);
-    }
-  }
+#bottom {
+  height: 1rem;
 }
 </style>
