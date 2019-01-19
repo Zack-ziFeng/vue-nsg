@@ -25,7 +25,7 @@
 
 </template>
 <script>
-import Tip from '../Tips/Tips.vue'
+import Tip from '../tools/Tips.vue'
 export default {
   props: ['goodlist', 'type'],
   data () {
