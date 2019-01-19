@@ -5,7 +5,7 @@
               :speed="800">
       <mt-swipe-item v-for="(item) in carousel"
                      :key="item.data">
-        <img :src="item.image"
+        <img v-lazy="item.image"
              :alt="item.data">
       </mt-swipe-item>
     </mt-swipe>
@@ -16,7 +16,7 @@
       <ul class="goodCon">
         <li v-for="good in item.goods.item" :key="good.goods_id" @click="showGood(good.goods_id)">
           <div class="goodImg">
-            <img :src="good.goods_image"
+            <img v-lazy="good.goods_image"
                  :alt="good.goods_name">
           </div>
           <p class="goodName">{{good.goods_name}}</p>
@@ -26,23 +26,38 @@
         </li>
       </ul>
     </div>
+    <to-top class="fixedTop"
+            v-show="toTopShow" />
   </div>
 </template>
 <script>
 import headerLy from '@/components/header.vue'
+import ToTop from '@/components/page/tools/ToTop.vue'
 export default {
   data () {
     return {
       carousel: [],
-      goodlist: []
+      goodlist: [],
+      toTopShow: false
     }
   },
   components: {
-    headerLy
+    headerLy,
+    ToTop
   },
   methods: {
     showGood (id) {
       this.$router.push({path: '/details', query: {goodsId: id}})
+    },
+    runLoad () {
+      var thisTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      var clientH = window.innerHeight || document.body.clientHeight || document.documentElement.clientHeight
+      // 滚动到可视区域的一半显示滚动到顶部按钮
+      if (thisTop >= clientH) {
+        this.toTopShow = true
+      } else {
+        this.toTopShow = false
+      }
     }
   },
   beforeMount () {
@@ -58,10 +73,27 @@ export default {
     }).catch(err => {
       console.log(err)
     })
+  },
+  mounted () { // 挂在滚动事件
+    // let _this = this
+    window.addEventListener('scroll', this.runLoad)
+    window.addEventListener('touchmove', this.runLoad)
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.runLoad)
+    window.removeEventListener('touchmove', this.runLoad)
   }
 }
 </script>
 <style lang="scss" scoped>
+@function r($px) {
+  @return $px / 50px * 1rem;
+}
+.fixedTop {
+  position: fixed;
+  bottom: r(80px);
+  right: r(10px);
+}
 .box {
   background: #fafafa;
   padding-bottom: 1.1rem;

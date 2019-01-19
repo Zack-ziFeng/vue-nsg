@@ -1,11 +1,11 @@
 <template>
   <div>
-    <ul :class="{'goodCon':type,'typeSecond':!type}"
+    <ul id="goodList" :class="{'goodCon':type,'typeSecond':!type}"
         v-if="goodlist.length>0">
       <li v-for="good in goodlist"
           :key="good.goods_id" @click="showGood(good.goods_id)">
         <div class="goodImg">
-          <img :src="good.goods_image_url"
+          <img v-lazy="good.goods_image_url"
                :alt="good.goods_name">
         </div>
         <div class="goodMess">
@@ -20,24 +20,24 @@
         </div>
       </li>
     </ul>
-    <div class="reset" v-if="goodlist.length<=0">
-      <div class="logo">
-        <i></i>
-      </div>
-      <dl class="tips">
-        <dt>没有找到任何相关信息</dt>
-        <dd>选择或搜索其它商品分类/名称...</dd>
-      </dl>
-      <div class="btn">
-        <a href="javascript:;" @click="reset">重新选择</a>
-      </div>
-    </div>
+    <Tip :show="goodlist.length<=0" :data="data" @func="reset"/>
   </div>
 
 </template>
 <script>
+import Tip from '../Tips/Tips.vue'
 export default {
   props: ['goodlist', 'type'],
+  data () {
+    return {
+      data: {
+        title: '没有找到任何相关信息',
+        message: '选择或搜索其它商品分类/名称...',
+        buttonName: '重新选择',
+        logoSrc: 'https://www.nanshig.com/wap/images/search_w.png'
+      }
+    }
+  },
   methods: {
     reset () {
       this.$emit('resetAll')
@@ -45,67 +45,15 @@ export default {
     showGood (id) {
       this.$emit('showGood', id)
     }
+  },
+  components: {
+    Tip
   }
 }
 </script>
 <style lang="scss" scoped>
 @function r($px) {
   @return $px / 50px * 1rem;
-}
-.reset {
-  position: absolute;
-  top:0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  text-align: center;
-  width: r(200px);
-  height: r(164px);
-  .logo {
-    width: r(48.39px);
-    height: r(48.39px);
-    margin: 0 auto;
-    background: #ddd;
-    padding: r(8px);
-    border-radius: 50%;
-    i {
-      display: block;
-      height: 100%;
-      background: url('https://www.nanshig.com/wap/images/search_w.png') no-repeat;
-      background-size: 80%;
-      background-position: 50% 50%;
-    }
-  }
-  .tips {
-    margin-top: r(16.5px);
-    // height: r(60.5px);
-    font-size: r(16px);
-    dt {
-      line-height: r(20px);
-      margin-bottom: r(5px);
-    }
-    dd {
-      font-size: r(11px);
-      color: #999;
-      line-height: r(20px);
-      margin-bottom: r(11px);
-    }
-  }
-  .btn {
-      line-height: r(14px);
-      a {
-        height: r(24.2px);
-        width: r(62.8px);
-        padding: 0 r(6.6px);
-        font-size: r(14px);
-        color: #555;
-        background: #fff;
-        border: r(1px) solid #ccc;
-        line-height: r(24.2px);
-        display: inline-block;
-      }
-  }
 }
 .goodCon {
   margin-top: 0.1rem;

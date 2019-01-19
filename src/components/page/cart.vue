@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="cartBox">
+    <!-- 顶部导航 -->
     <mt-header title="购物车"
                class="cartHead">
       <div slot="left">
@@ -9,6 +10,8 @@
       <mt-button icon="more"
                  slot="right"></mt-button>
     </mt-header>
+
+    <!-- 购物车列表 -->
     <div class="cartList">
       <dl v-for="(item, index) in cartList"
           :key="item.storeName">
@@ -22,7 +25,7 @@
         <dd>
           <ul class="listCon">
             <li v-for="(i,idx) in item.cart"
-                :key="i.goodId">
+                :key="i.cartId">
               <div class="check">
                 <input type="checkbox"
                        :checked="i.selected"
@@ -37,22 +40,30 @@
                 <p class="goodPrice">￥{{i.goods_price}}</p>
                 <div class="addSub">
                   <span class="sub"
-                        @click="sub(index,idx,i.goodId)">-</span>
+                        @click="sub(index,idx,i.cartId)">-</span>
                   <input type="text"
                          readonly
                          v-model="i.num">
                   <span class="add"
-                        @click="add(index,idx,i.goodId)">+</span>
+                        @click="add(index,idx,i.cartId)">+</span>
                 </div>
                 <i class="remove"
-                   @click="remove(index,idx,i.goodId)"></i>
+                   @click="remove(index,idx,i.cartId)"></i>
               </div>
             </li>
           </ul>
         </dd>
       </dl>
     </div>
-    <div class="total">
+
+    <!-- 购物车为空时,显示提示 -->
+    <Tip :show="cartList.length <= 0"
+         :data="tipsData"
+         @func="toIndex" />
+
+    <!-- 总数 -->
+    <div class="total"
+         v-show="cartList.length>0">
       <div class="check">
         <input type="checkbox"
                v-model="checkAll">
@@ -60,20 +71,42 @@
       <div class="totalPrice">
         合计总金额：<em>￥</em><span>{{total}}</span>
       </div>
-      <div class="sure">
+      <div :class="{sure: true,noGood: noGood}">
         <a href="javascript:;">确认信息</a>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { MessageBox } from 'mint-ui'
+import Tip from './Tips/Tips.vue'
 export default {
   data () {
     return {
-      cartList: [] // 列表数据
+      cartList: [], // 列表数据,
+      tipsData: {
+        title: '您的购物车还是空的',
+        message: '去挑一些中意的商品吧',
+        buttonName: '随便逛逛',
+        logoSrc: 'https://www.nanshig.com/wap/images/cart_w.png'
+      }
     }
   },
+  components: {
+    Tip
+  },
   computed: {
+    noGood () {
+      let bool = true
+      this.cartList.forEach(item => {
+        item.cart.forEach(i => {
+          if (i.selected === true) {
+            bool = false
+          }
+        })
+      })
+      return bool
+    },
     // 总数
     total () {
       let tot = 0
@@ -92,7 +125,7 @@ export default {
       get () {
         return this.cartList.every(item => {
           return item.selected
-        })
+        }) && this.cartList.length > 0
       },
       set (checked) {
         this.cartList.forEach(item => {
@@ -129,11 +162,13 @@ export default {
     },
     // 删除
     remove (index, idx, id) {
-      this.$store.commit('removeList', { id })
-      this.cartList[index].cart.splice(idx, 1)
-      if (this.cartList[index].cart.length <= 0) { // 数组为空时删除该数组
-        this.cartList.splice(index, 1)
-      }
+      MessageBox.confirm('确定要删除该商品吗?').then(action => {
+        this.$store.commit('removeList', { id })
+        this.cartList[index].cart.splice(idx, 1)
+        if (this.cartList[index].cart.length <= 0) { // 数组为空时删除该数组
+          this.cartList.splice(index, 1)
+        }
+      })
     },
     // 单选
     checkIt (index, idx, checked) {
@@ -151,6 +186,9 @@ export default {
         item.selected = checked
       })
       // console.log(this.cartList[index].cart)
+    },
+    toIndex () {
+      this.$router.push('/')
     }
   },
   mounted () {
@@ -165,7 +203,7 @@ export default {
         arr3.push(element)
       }
     })
-    arr3.forEach(item => {
+    arr3.forEach((item, index) => {
       let obj = {
         storeName: item,
         cart: [],
@@ -178,6 +216,13 @@ export default {
       })
       this.cartList.push(obj)
     })
+
+    // 判断店铺内的商品是否已全勾选上了 true店铺也购选上
+    this.cartList.forEach(i => {
+      i.selected = i.cart.every(good => {
+        return good.selected
+      })
+    })
   }
 }
 </script>
@@ -185,6 +230,11 @@ export default {
 @function r($px) {
   @return $px / 50px * 1rem;
 }
+
+.cartBox {
+  padding-bottom: r(55px)
+}
+
 .cartHead {
   background: #ff5001;
   height: r(43px);
@@ -327,20 +377,21 @@ input[type="checkbox"] {
   left: 0;
   right: 0;
   width: 100%;
-  height: r(44px);
-  line-height: r(44px);
+  height: r(55px);
+  line-height: r(55px);
   background: #fff;
   display: flex;
+  z-index: 10;
   .check {
     width: 15%;
-    line-height: r(44px);
+    line-height: r(55px);
     text-align: center;
     input {
       margin-bottom: r(6px);
     }
   }
   .totalPrice {
-    line-height: r(44px);
+    line-height: r(55px);
     font-size: r(14px);
     text-align: right;
     flex: 1;
@@ -360,11 +411,14 @@ input[type="checkbox"] {
     background: #ff5001;
     a {
       display: block;
-      height: r(44px);
+      height: r(55px);
       text-align: center;
       font-size: r(18px);
       color: #fff;
     }
+  }
+  .noGood {
+    background: #888
   }
 }
 </style>

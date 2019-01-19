@@ -37,7 +37,7 @@
 <script>
 import SortBtn from '@/components/page/goodlist/SortBtn.vue'
 import Goods from '@/components/page/goodlist/Goods.vue'
-import ToTop from '@/components/page/goodlist/ToTop.vue'
+import ToTop from '@/components/page/tools/ToTop.vue'
 export default {
   inject: ['reload'],
   data () {

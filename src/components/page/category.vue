@@ -9,12 +9,15 @@
     <Select-Piece :content="dataText" :itemsList="itemslist" @showList="showList"></Select-Piece>
 
     <Items-Recommend :list="recommend"></Items-Recommend>
+    <to-top class="fixedTop"
+            v-show="toTopShow" />
   </div>
 </template>
 <script>
 import SelectPiece from "@/components/page/category/SelectPiece.vue";
 import ItemsRecommend from "@/components/page/category/ItemsRecommend.vue";
 import CateHead from "@/components/page/category/CateHead.vue";
+import ToTop from '@/components/page/tools/ToTop.vue'
 
 export default {
   data() {
@@ -24,7 +27,8 @@ export default {
       dataText: "",
       dataId: "",
       itemslist: "",
-      recommend: ""
+      recommend: "",
+      toTopShow: false
     };
   },
   methods: {
@@ -33,12 +37,23 @@ export default {
         path: "/goodlist",
         query: { cate: id, type: "cate" }
       });
+    },
+    runLoad () {
+      var thisTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      var clientH = window.innerHeight || document.body.clientHeight || document.documentElement.clientHeight
+      // 滚动到可视区域的一半显示滚动到顶部按钮
+      if (thisTop >= clientH) {
+        this.toTopShow = true
+      } else {
+        this.toTopShow = false
+      }
     }
   },
   components: {
     SelectPiece,
     ItemsRecommend,
-    CateHead
+    CateHead,
+    ToTop
   },
   updated() {
     this.dataText = this.dataTab[this.selected - 1].text;
@@ -80,6 +95,9 @@ export default {
     }
   },
   mounted() {
+    window.addEventListener('scroll', this.runLoad)
+    window.addEventListener('touchmove', this.runLoad)
+
     this.axios
       .get("https://www.nanshig.com/mobile/index.php", {
         params: {
@@ -94,11 +112,25 @@ export default {
       .catch(err => {
         console.log(err);
       });
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.runLoad)
+    window.removeEventListener('touchmove', this.runLoad)
   }
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@function r($px) {
+  @return $px / 50px * 1rem;
+}
+
+.fixedTop {
+  position: fixed;
+  bottom: r(80px);
+  right: r(10px);
+}
+
 #category {
   background-color: #f5f5f5;
 }

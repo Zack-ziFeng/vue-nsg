@@ -29,7 +29,7 @@
       </mt-tab-container-item>
     </mt-tab-container>
 
-    <Details-Footer :size="sSize" :color="sColor" :now="sNow" :img="sImg" :name="goods_name.split(' ')[0]"></Details-Footer>
+    <Details-Footer :store="store" :price="price" :size="sSize" :color="sColor" :now="sNow" :img="sImg" :name="goods_name.split(' ')[0]" :goodId="goodsId"></Details-Footer>
 
   </div>
 </template>
@@ -55,7 +55,9 @@ export default {
       sColor: "",
       sSize: "",
       sNow: "",
-      sImg: ""
+      sImg: "",
+      price: '',
+      store: ''
     };
   },
   methods: {
@@ -79,12 +81,13 @@ export default {
       this.data = res.data.datas;
       this.Img = this.data.goods_image.split(',');
       this.goods_name = this.data.goods_info.goods_name;
-      console.log(this.data);
       this.goods_msg = this.data;
       this.sImg = Object.values(Object.values(this.data.spec_image));
       this.sColor = Object.values(Object.values(this.data.goods_info.spec_value)[0]);
       this.sSize = Object.values(Object.values(this.data.goods_info.spec_value)[1]);
       this.sNow = Object.values(Object.values(this.data.goods_info.goods_spec));
+      this.price = res.data.datas.goods_info.goods_price
+      this.store = res.data.datas.store_info.store_name
     }).catch(err=>{
       console.log(err);
     });
@@ -99,11 +102,6 @@ export default {
     }).catch(err=>{
       console.log(err);
     });
-  },
-  watch: {
-    goodsId () {
-      console.log(this.goodsId)
-    }
   },
   components: {
     DetailsGoods,

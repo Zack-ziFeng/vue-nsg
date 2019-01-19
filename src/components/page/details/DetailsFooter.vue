@@ -61,7 +61,7 @@
         </div>
         <div class="btns">
           <span>立即购买</span>
-          <span>加入购物车</span>
+          <span @click="addToCart">加入购物车</span>
         </div>
       </div>
     </mt-popup>
@@ -69,8 +69,9 @@
 </template>
 
 <script>
+import { Toast } from 'mint-ui'
 export default {
-  props: ["color", "size", "now", "img", "name"],
+  props: ["color", "size", "now", "img", "name", "goodId","price", "store"],
   data() {
     return {
       popupVisible: false,
@@ -103,6 +104,23 @@ export default {
     },
     change2(idx) {
       this.active2 = idx;
+    },
+    addToCart () {
+      let good = {
+        goodId: this.goodId,
+        goodName: this.name,
+        goods_price: this.price,
+        imgUrl: this.img[this.active1],
+        storeName: this.store,
+        num: this.num,
+        color: this.color[this.active1],
+        size: this.size[this.active2],
+        selected: false
+      }
+      this.$store.commit('pushGood', good)
+      this.num = 1
+      this.popupVisible = false
+      Toast('加入成功！')
     }
   }
 };
