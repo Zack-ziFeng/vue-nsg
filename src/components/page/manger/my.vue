@@ -8,9 +8,14 @@
     </mt-header>
 
     <div id="top">
-      <div id="login" @click="jumpLogin()">
+      <div class="login" @click="jumpLogin()" v-show="!isShow">
         <img src="/static/img/my.png">
         <span>点击登录</span>
+      </div>
+
+      <div class="login" v-show="isShow">
+        <img src="/static/img/my.png">
+        <span>{{name}}</span>
       </div>
 
       <ul>
@@ -52,6 +57,8 @@
         <span>收货地址</span>
         <span>系统设置</span>
       </div>
+
+      <mt-button type="danger" size="large" v-show="isShow" @click="out()">退出登录</mt-button>
     </div>
   </div>
 </template>
@@ -117,12 +124,29 @@ export default {
           i: "/static/img/my/10.png",
           val: "积分"
         }
-      ]
+      ],
+      isShow: false,
+      name: ""
     };
   },
   methods: {
-    jumpLogin(){
-      this.$router.push({path: '/login'});
+    jumpLogin() {
+      this.$router.replace({ path: "/login" });
+    },
+    out() {
+      let now = new Date();
+      now.setDate(now.getDate() - 1);
+      document.cookie = `user=x;expires=${now}`;
+      this.$router.replace({ path: "/login" });
+    }
+  },
+  mounted() {
+    if (this.$route.query.name === undefined) {
+      this.isShow = false;
+      this.name = "";
+    } else {
+      this.isShow = true;
+      this.name = this.$route.query.name;
     }
   }
 };
@@ -145,7 +169,7 @@ export default {
   background: #ff5001 url("/static/img/my_bg.png") top center no-repeat;
   position: relative;
 
-  #login {
+  .login {
     position: relative;
     top: 50%;
     transform: translateY(-50%);
@@ -237,5 +261,8 @@ export default {
       font-size: r(14px);
     }
   }
+}
+.mint-button--danger {
+  margin-top: 0.4rem;
 }
 </style>
