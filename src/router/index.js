@@ -59,12 +59,18 @@ const routes = [{
 {
   path: '/mess',
   name: '消息',
-  component: Message
+  component: Message,
+  meta: {
+    requireAuth: true
+  }
 },
 {
   path: '/cart',
   name: '购物车',
-  component: Cart
+  component: Cart,
+  meta: {
+    requireAuth: true
+  }
 },
 {
   path: '/manger',
@@ -110,6 +116,20 @@ const routes = [{
 
 let router = new Router({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) {
+    if (document.cookie !== '') {
+      next()
+    } else {
+      next({
+        path: '/login'
+      })
+    }
+  } else {
+    next()
+  }
 })
 
 export default router

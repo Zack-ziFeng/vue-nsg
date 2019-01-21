@@ -47,6 +47,8 @@
       @blur.native.capture="checkPH()"
     ></mt-field>
     <mt-button plain type="primary" size="large" @click="reg()">注册</mt-button>
+
+    <mt-popup v-model="popupVisible" position="top">注册信息错误</mt-popup>
   </div>
 </template>
 <script>
@@ -58,7 +60,8 @@ export default {
       password: "",
       password2: "",
       phone: "",
-      checkTrue: [false, false, false, false, false]
+      checkTrue: [false, false, false, false, false],
+      popupVisible: false
     };
   },
   methods: {
@@ -111,6 +114,8 @@ export default {
         };
         document.cookie = `user=${JSON.stringify(obj)}`;
         this.$router.replace({ path: "/login" });
+      } else {
+        this.popupVisible = true;
       }
     }
   }
@@ -126,5 +131,13 @@ export default {
   background-color: transparent;
   color: #ff5001;
   margin-top: 0.5rem;
+}
+.mint-popup-top {
+  width: 100%;
+  font-size: 0.45rem;
+  text-align: center;
+  padding: 0.15rem 0;
+  background-color: #000;
+  color: #fff;
 }
 </style>
