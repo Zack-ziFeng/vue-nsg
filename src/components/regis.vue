@@ -1,5 +1,12 @@
 <template>
   <div>
+    <mt-header title="注册">
+      <router-link to="/manger" slot="left">
+        <mt-button icon="back"></mt-button>
+      </router-link>
+      <mt-button slot="right" @click="jumpLogin()">登录</mt-button>
+    </mt-header>
+
     <mt-field label="用户名" placeholder="请输入用户名" v-model="username" state=""></mt-field>
     <mt-field label="邮箱" placeholder="请输入邮箱" type="email" v-model="email" state=""></mt-field>
     <mt-field label="密码" placeholder="请输入密码" type="password" v-model="password" state=""></mt-field>
@@ -25,12 +32,18 @@ export default {
       checkE(){},
       checkP(){},
       checkP2(){},
-      checkPH(){}
+      checkPH(){},
+      jumpLogin() {
+        this.$router.replace({path: '/login'});
+      }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.mint-header {
+  background-color: #ff5001;
+}
 .mint-button--primary.is-plain {
   border: 1px solid #ff5001;
   background-color: transparent;
