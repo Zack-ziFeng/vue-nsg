@@ -29,7 +29,7 @@
               <div class="check">
                 <input type="checkbox"
                        :checked="i.selected"
-                       @click="checkIt(index,idx,!i.selected)">
+                       @click="checkIt(i.goodId,!i.selected, index)">
               </div>
               <div class="goodImg">
                 <img :src="i.imgUrl"
@@ -83,7 +83,7 @@ import Tip from './tools/Tips.vue'
 export default {
   data () {
     return {
-      cartList: [], // 列表数据,
+      // cartList: this.$store.getters.cartListMess, // 列表数据,
       tipsData: {
         title: '您的购物车还是空的',
         message: '去挑一些中意的商品吧',
@@ -96,6 +96,11 @@ export default {
     Tip
   },
   computed: {
+    cartList: {
+      get () {
+        return this.$store.getters.cartListMess
+      }
+    },
     noGood () {
       let bool = true
       this.cartList.forEach(item => {
@@ -120,14 +125,23 @@ export default {
       tot = tot !== 0 ? tot.toFixed(2) : '00.00'
       return tot
     },
-    // 店铺全选
+    // 全选
     checkAll: {
       get () {
-        return this.cartList.every(item => {
-          return item.selected
-        }) && this.cartList.length > 0
+        for (let i = 0, len = this.cartList.length; i < len; i++) {
+          for (var j = 0; j < this.cartList[i].cart.length; j++) {
+            if (this.cartList[i].cart[j].selected === false) {
+              return false
+            }
+          }
+        }
+        return true
+        // return this.cartList.forEach(item => {
+
+        // })
       },
       set (checked) {
+        console.log(2)
         this.cartList.forEach(item => {
           item.selected = checked
           item.cart.forEach(i => {
@@ -144,8 +158,9 @@ export default {
       if (num > 1) {
         num = --num
         this.$store.commit('cartListChange', { num, id })
-        this.cartList[index].cart[idx].num = num
+        // this.cartList[index].cart[idx].num = num
       }
+      console.log(this.$store.state.cartList)
     },
     // 添加数量
     add (index, idx, id) {
@@ -153,7 +168,7 @@ export default {
       if (num < 100) {
         num = ++num
         this.$store.commit('cartListChange', { num, id })
-        this.cartList[index].cart[idx].num = num
+        // this.cartList[index].cart[idx].num = num
       }
     },
     // 返回上一页
@@ -164,62 +179,33 @@ export default {
     remove (index, idx, id) {
       MessageBox.confirm('确定要删除该商品吗?').then(action => {
         this.$store.commit('removeList', { id })
-        this.cartList[index].cart.splice(idx, 1)
-        if (this.cartList[index].cart.length <= 0) { // 数组为空时删除该数组
-          this.cartList.splice(index, 1)
-        }
+        // this.cartList[index].cart.splice(idx, 1)
+        // console.log(this.cartList)
+        // if (this.cartList[index].cart.length <= 0) { // 数组为空时删除该数组
+        //   this.cartList.splice(index, 1)
+        // }
       })
+      console.log(this.cartList)
     },
     // 单选
-    checkIt (index, idx, checked) {
-      this.cartList[index].cart[idx].selected = checked
-      this.cartList[index].selected = this.cartList[index].cart.every(item => {
-        return item.selected
-      })
-      // console.log(this.cartList[index].cart[idx].selected)
+    checkIt (id, checked, index) {
+      this.$store.commit('checkOne', {id, checked})
     },
-    // 全选
+    // 店铺全选
     checkThisAll (index, checked) {
-      // console.log(checked)
-      this.cartList[index].selected = checked
+      // this.cartList[index].selected = checked
       this.cartList[index].cart.forEach(item => {
         item.selected = checked
       })
-      // console.log(this.cartList[index].cart)
     },
     toIndex () {
       this.$router.push('/')
     }
   },
-  mounted () {
-    // 购物车数据转换成店铺列表
-    let arr = this.$store.state.cartList
-    let arr2 = arr.map(item => {
-      return item.storeName
-    })
-    let arr3 = []
-    arr2.forEach(element => {
-      if (arr3.indexOf(element) === -1) {
-        arr3.push(element)
-      }
-    })
-    arr3.forEach((item, index) => {
-      let obj = {
-        storeName: item,
-        cart: [],
-        selected: false
-      }
-      arr.forEach(ele => {
-        if (ele.storeName === item) {
-          obj.cart.push(ele)
-        }
-      })
-      this.cartList.push(obj)
-    })
-
-    // 判断店铺内的商品是否已全勾选上了 true店铺也购选上
-    this.cartList.forEach(i => {
-      i.selected = i.cart.every(good => {
+  beforeUpdate () {
+    console.log(this.cartList)
+    this.cartList.forEach((item, index) => {
+      item.selected = item.cart.every(good => {
         return good.selected
       })
     })

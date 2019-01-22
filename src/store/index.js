@@ -45,11 +45,44 @@ const state = {
 
 const getters = {
   cartListMess (state) {
-    return state.cartList
+    let list = []
+    let arr2 = state.cartList.map(item => {
+      return item.storeName
+    })
+    let arr3 = []
+    arr2.forEach(element => {
+      if (arr3.indexOf(element) === -1) {
+        arr3.push(element)
+      }
+    })
+    arr3.forEach((item, index) => {
+      let obj = {
+        storeName: item,
+        cart: [],
+        selected: false
+      }
+      state.cartList.forEach(ele => {
+        if (ele.storeName === item) {
+          obj.cart.push(ele)
+        }
+      })
+      list.push(obj)
+    })
+    // console.log(state.cartList)
+    return list
   }
 }
 
 const mutations = {
+  checkOne (state, payload) {
+    // state.cartList[payload.id].selected = payload.checked
+    state.cartList.forEach(item => {
+      if (item.goodId === payload.id) {
+        item.selected = payload.checked
+      }
+    })
+    // console.log(state.cartList)
+  },
   cartListChange (state, payload) {
     state.cartList.forEach((item, index) => {
       if (item.cartId === payload.id) {
@@ -63,6 +96,7 @@ const mutations = {
         state.cartList.splice(index, 1)
       }
     })
+    console.log(state.cartList)
   },
   pushGood (state, payload) {
     for (let i = 0; i < state.cartList.length; i++) {
