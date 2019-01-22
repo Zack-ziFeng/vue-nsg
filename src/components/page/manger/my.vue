@@ -142,8 +142,14 @@ export default {
   },
   mounted() {
     if (this.$route.query.name === undefined) {
-      this.isShow = false;
-      this.name = "";
+      if (document.cookie !== "") {
+        let obj = JSON.parse(document.cookie.split("=")[1]);
+        this.name = obj.name;
+        this.isShow = true;
+      } else {
+        this.isShow = false;
+        this.name = "";
+      }
     } else {
       this.isShow = true;
       this.name = this.$route.query.name;
