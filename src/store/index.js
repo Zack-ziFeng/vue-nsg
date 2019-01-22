@@ -77,7 +77,7 @@ const mutations = {
   checkOne (state, payload) {
     // state.cartList[payload.id].selected = payload.checked
     state.cartList.forEach(item => {
-      if (item.goodId === payload.id) {
+      if (item.cartId === payload.id) {
         item.selected = payload.checked
       }
     })

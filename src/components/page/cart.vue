@@ -29,7 +29,7 @@
               <div class="check">
                 <input type="checkbox"
                        :checked="i.selected"
-                       @click="checkIt(i.goodId,!i.selected, index)">
+                       @click="checkIt(i.cartId,!i.selected, index)">
               </div>
               <div class="goodImg">
                 <img :src="i.imgUrl"
@@ -141,7 +141,6 @@ export default {
         // })
       },
       set (checked) {
-        console.log(2)
         this.cartList.forEach(item => {
           item.selected = checked
           item.cart.forEach(i => {
@@ -202,8 +201,14 @@ export default {
       this.$router.push('/')
     }
   },
+  beforeMount () {
+    this.cartList.forEach((item, index) => {
+      item.selected = item.cart.every(good => {
+        return good.selected
+      })
+    })
+  },
   beforeUpdate () {
-    console.log(this.cartList)
     this.cartList.forEach((item, index) => {
       item.selected = item.cart.every(good => {
         return good.selected
