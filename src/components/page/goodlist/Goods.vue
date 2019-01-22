@@ -27,7 +27,7 @@
 <script>
 import Tip from '../tools/Tips.vue'
 export default {
-  props: ['goodlist', 'type'],
+  props: ['goodlist', 'type', 'thiskey'],
   data () {
     return {
       data: {
@@ -41,6 +41,10 @@ export default {
   methods: {
     reset () {
       this.$emit('resetAll')
+      // if (this.thiskey === 1) {
+      // } else {
+      //   this.$emit('comeBack')
+      // }
     },
     showGood (id) {
       this.$emit('showGood', id)

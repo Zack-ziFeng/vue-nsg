@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui'
+import { Toast, MessageBox } from 'mint-ui'
 export default {
   props: ["color", "size", "now", "img", "name", "goodId","price", "store"],
   data() {
@@ -106,21 +106,27 @@ export default {
       this.active2 = idx;
     },
     addToCart () {
-      let good = {
-        goodId: this.goodId,
-        goodName: this.name,
-        goods_price: this.price,
-        imgUrl: this.img[this.active1],
-        storeName: this.store,
-        num: this.num,
-        color: this.color[this.active1],
-        size: this.size[this.active2],
-        selected: false
+      if (document.cookie !== '') {
+        let good = {
+          goodId: this.goodId,
+          goodName: this.name,
+          goods_price: this.price,
+          imgUrl: this.img[this.active1],
+          storeName: this.store,
+          num: this.num,
+          color: this.color[this.active1],
+          size: this.size[this.active2],
+          selected: false
+        }
+        this.$store.commit('pushGood', good)
+        this.num = 1
+        this.popupVisible = false
+        Toast('加入成功！')
+      } else {
+        MessageBox.confirm('您还没登录,是否跳转登录页面?', '温馨提示').then(action => {
+          this.$router.push('/login')
+        }).catch(err => err)
       }
-      this.$store.commit('pushGood', good)
-      this.num = 1
-      this.popupVisible = false
-      Toast('加入成功！')
     }
   }
 };

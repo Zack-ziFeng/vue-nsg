@@ -2,7 +2,7 @@
   <div class="cartBox">
     <!-- 顶部导航 -->
     <mt-header title="购物车"
-               class="cartHead">
+               class="cartHead" fixed>
       <div slot="left">
         <mt-button icon="back"
                    @click="backOne"></mt-button>

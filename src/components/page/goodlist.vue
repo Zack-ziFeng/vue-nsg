@@ -13,7 +13,7 @@
           <input type="search"
                  class="inputText"
                  v-model="text"
-                 @click="toSearch(text)">
+                 @click="toSearch">
         </div>
       </div>
       <div slot="right"
@@ -29,7 +29,9 @@
            class="paD"
            :type="changeClass"
            @resetAll="resetAll"
-           @showGood="showGood"></Goods>
+           @showGood="showGood"
+           :thiskey="key"
+           @comeBack="toSearch"></Goods>
     <to-top class="fixedTop"
             v-show="toTopShow" />
   </div>
@@ -43,6 +45,7 @@ export default {
   data () {
     return {
       // 请求参数
+      key: 1,
       keyBox: {
         act: 'goods',
         op: 'goods_list',
@@ -107,8 +110,8 @@ export default {
       this.changeClass = !this.changeClass
     },
     // 返回搜索页面
-    toSearch (text) {
-      this.$router.push({ path: '/search', query: { search: text } })
+    toSearch () {
+      this.$router.push({ path: '/search', query: { search: this.text } })
     },
     resetAll () {
       this.reload()

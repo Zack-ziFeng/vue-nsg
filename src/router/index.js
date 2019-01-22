@@ -7,8 +7,6 @@ import Login from '@/components/login.vue'
 import Regis from '@/components/regis.vue'
 import Manger from '@/components/page/manger.vue'
 import My from '@/components/page/manger/my.vue'
-import Send from '@/components/page/manger/send.vue'
-import MyHistory from '@/components/page/manger/history.vue'
 import Page404 from '@/components/404.vue'
 import Cart from '@/components/page/cart.vue'
 import Message from '@/components/page/message.vue'
@@ -82,16 +80,6 @@ const routes = [{
     path: '/manger/my',
     name: '我的信息',
     component: My
-  },
-  {
-    path: '/manger/send',
-    name: '发货管理',
-    component: Send
-  },
-  {
-    path: '/manger/history',
-    name: '发货记录',
-    component: MyHistory
   }
   ]
 },
