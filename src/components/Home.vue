@@ -71,7 +71,7 @@ export default {
         return index !== 0
       })
     }).catch(err => {
-      console.log(err)
+      return err
     })
   },
   mounted () { // 挂在滚动事件

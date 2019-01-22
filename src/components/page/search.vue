@@ -141,6 +141,8 @@ export default {
       background-position: 50% 50%;
       vertical-align: middle;
       border-radius: 0 0.2rem 0.2rem 0;
+      opacity: 0.2;
+      filter: alpha(opacity=20);
     }
   }
 }

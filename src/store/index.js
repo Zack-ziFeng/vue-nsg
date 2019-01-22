@@ -96,7 +96,6 @@ const mutations = {
         state.cartList.splice(index, 1)
       }
     })
-    console.log(state.cartList)
   },
   pushGood (state, payload) {
     for (let i = 0; i < state.cartList.length; i++) {
@@ -105,7 +104,7 @@ const mutations = {
         return
       }
     }
-    payload.cartId = state.cartList[state.cartList.length - 1].cartId + 1
+    payload.cartId = state.cartList.length > 0 ? state.cartList[state.cartList.length - 1].cartId + 1 : 0
     state.cartList.push(payload)
   }
 }

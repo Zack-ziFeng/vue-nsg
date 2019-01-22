@@ -159,7 +159,7 @@ export default {
         this.$store.commit('cartListChange', { num, id })
         // this.cartList[index].cart[idx].num = num
       }
-      console.log(this.$store.state.cartList)
+      // console.log(this.$store.state.cartList)
     },
     // 添加数量
     add (index, idx, id) {
@@ -184,7 +184,6 @@ export default {
         //   this.cartList.splice(index, 1)
         // }
       })
-      console.log(this.cartList)
     },
     // 单选
     checkIt (id, checked, index) {
@@ -223,7 +222,8 @@ export default {
 }
 
 .cartBox {
-  padding-bottom: r(55px)
+  padding-bottom: r(55px);
+  padding-top: r(43px);
 }
 
 .cartHead {
