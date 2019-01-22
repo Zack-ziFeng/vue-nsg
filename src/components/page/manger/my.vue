@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="content">
     <mt-header fixed>
       <mt-button slot="left">
         <img src="/static/img/set.png">
@@ -163,6 +163,9 @@ export default {
   @return $px / 50px * 1rem;
 }
 
+#content {
+  overflow: hidden;
+}
 .mint-header {
   background-color: rgba(0, 0, 0, 0);
   img {
@@ -270,5 +273,6 @@ export default {
 }
 .mint-button--danger {
   margin-top: 0.4rem;
+  margin-bottom: 1.5rem;
 }
 </style>
